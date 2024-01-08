@@ -36,12 +36,6 @@ repositories {
     }
   }
   maven {
-    url = uri("https://repo.extendedclip.com/content/repositories/placeholderapi/")
-    content {
-      includeModule("me.clip", "placeholderapi")
-    }
-  }
-  maven {
     url = uri("https://repository.liferay.com/nexus/content/repositories/public/")
     content {
       includeGroup("com.github.GeyserMC") //required by mcprotocollib
