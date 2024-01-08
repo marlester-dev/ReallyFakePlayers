@@ -1,0 +1,19 @@
+name: $name
+version: $version
+main: me.marlester.rfp.ReallyFakePlayers
+description: $description
+load: STARTUP
+authors:
+  - Marlester
+  - freethemice
+api-version: "$apiVersion"
+depend:
+  - MiniPlaceholders
+softdepend:
+  - Vault
+website: "https://dev.bukkit.org/projects/really-fake-players"
+commands:
+  rfp:
+    description: "Main plugin's command, type it for help."
+    aliases:
+      - reallyfakeplayers

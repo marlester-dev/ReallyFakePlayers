@@ -1,0 +1,143 @@
+# ReallyFakePlayers configuration file
+# Supports PlaceholderAPI
+# "unset" here means that a value is set to null or simply blank
+#
+# Placeholders:
+# <rfp_fakeplayer_count>: Number of fake players
+# <rfp_player_count_no_fakeplayers>: Server's player count without fake
+# players included
+# Internal placeholders (only accessible in this plugin):
+# <internal_player_name>: Player's name
+# <internal_rel_1_player_name>: Name of the 1st player involved in the action
+# <internal_rel_2_player_name>: Name of the 2nd player involved in the action
+# Built-in MiniPlaceholders placeholders (Server Expansion):
+# https://github.com/MiniPlaceholders/MiniPlaceholders/wiki/Placeholders#server-expansion
+#
+# Warning ⚠:
+# Basic YAML knowledge and common sense recommended
+# Misconfigurations may lead to crashes or bugs
+
+# Auto config update system
+# DON'T change this unless you know what you do
+config-version: 1
+max-fake-players: 60
+# Staff won't be affected
+block-interaction:
+  enable: true
+  message: "<red>Hey, <internal_player_name>!<br>\
+    This player is on <yellow>DND</yellow> (Do Not Disturb)!"
+join-message: true
+quit-message: true
+invulnerable: true
+no-collision: true
+no-gravity: true
+invisibility-effect: true
+# Value should be a Location object
+# If unset, the default value is assumed to be a server spawn location
+# You can change it in-game with /rfp setspawn
+spawn-location:
+# Experimental, may not work perfectly
+# Attempts to hide fake players from all other players
+hide: false
+# Commands on join
+join-commands:
+  # You are able to unset this to disable this
+  as-console:
+    - "say Greetings to <internal_player_name>!"
+  # You are able to unset this to disable this
+  as-fake-player:
+    - "examplecommand"
+# Commands on quit
+quit-commands:
+  # You are able to unset this to disable this
+  as-console:
+    - "say Goodbye, <internal_player_name>!"
+  # You are able to unset this to disable this
+  as-fake-player:
+    - "examplecommand"
+# Value should be a string
+# If unset, the default value is assumed to be the server's ip
+join-ip:
+# Value should be an integer
+# If unset, the default value is assumed to be the server's port
+join-port:
+auto-join:
+  enable: true
+  startup-delay: 3
+  delay:
+    min: 60
+    max: 120
+auto-quit:
+  enable: true
+  delay:
+    min: 360
+    max: 1800
+welcome:
+  enable: true
+  # How many fake players can welcome at the period of time below (in seconds)
+  # -1 for unlimited
+  max-welcomers: 10
+  period: 3
+  delay:
+    min: 1
+    max: 3
+  # Messages they send when a player joins for the first time
+  first-join-messages:
+    - "Welcome!"
+    - "Welcome <internal_rel_2_player_name>!"
+    - "What's up <internal_rel_2_player_name>!"
+    - "<internal_rel_2_player_name>!"
+    - "Finally, the one and only <internal_rel_2_player_name>!"
+  # Messages they send when a player rejoins
+  rejoin-messages:
+    - "WB"
+    - "Welcome back <internal_rel_2_player_name>!"
+    - "Hey, <internal_rel_2_player_name>!"
+    - "Whats up <internal_rel_2_player_name>!"
+    - "<internal_rel_2_player_name>!"
+    - "Hello <internal_rel_2_player_name>!"
+    - "WB <internal_rel_2_player_name>!"
+chatting:
+  enable: true
+  # How many fake players can chat at the period of time below (in seconds)
+  # -1 for unlimited
+  max-chatters: 10
+  period: 3
+  first-delay:
+    min: 10
+    max: 80
+  delay:
+    min: 80
+    max: 180
+  # Random messages they will send throughout the time
+  messages:
+    - "Hello there"
+    - "G'day everybody, I am <internal_player_name>"
+    - "Anyone wanna talk?"
+    - "<server_name> is the best server!"
+vault-integration:
+  enable: false
+  # Groups fake players will be granted
+  # A random group will be chosen
+  # You are able to unset this to disable this
+  groups:
+    - "default"
+    - "vip"
+    - "premium"
+  # Permissions fake players will be granted
+  # You are able to unset this to disable this
+  permissions:
+    - "example.permission"
+update-check:
+  on-startup: true
+  notify-staff: true
+  # Value should be a string
+  # If unset, the default api key will be taken
+  # It's recommended to change the api key to yours for unexplained reasons
+  curse-api-key:
+  # Value should be a string
+  # If unset, the default api url will be taken
+  curse-api-url:
+  # Value should be an integer
+  # If unset, the default project id will be taken
+  curse-project-id:
