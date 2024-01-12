@@ -51,57 +51,24 @@ class FakePlayerImpl implements FakePlayer {
   private final FakePlayerJoinListenerFactory joinListenerFactory;
   private final ComponentLogger logger;
 
-  /**
-   * A name or a nick or a nickname of a fake player.
-   * The name could be gotten randomly from the name list file
-   * or given forcefully,
-   */
   @Getter
   @Assisted
   private final String name;
-  /**
-   * This is a fake player's UUID.
-   * Fake players use distinct UUIDs for safety,
-   * the system of giving UUIDs is similar to offline players one,
-   * though UUIDs for offline and fake players are different,
-   * see {@link FakePlayerUuidUtil}.
-   */
   @Getter
   private UUID uuid;
-  /**
-   * Key acts as a unique identifier of a fake player during an early login.
-   * It's being added to one of packets for a server-side identification.
-   * Please don't do much stuff with this without a great reason.
-   */
   @Getter
   private UUID key;
-  /**
-   * This is a MCProtocolLib's Session of a fake player.
-   */
   @Getter
   private Session client;
-  /**
-   * A {@link org.bukkit.entity.Player} of a fake player.
-   */
   @Getter
   @Setter
   private Player player;
-  /**
-   * This determines whether a fake player was removed or no BY THE PLUGIN.
-   */
   @Getter
   private boolean removed;
 
-  /**
-   * The join listener of the fake player. The setter is only used for removing it.
-   */
   @Setter
   private FakePlayerJoinListener joinListener;
 
-  /**
-   * Attempts to get a fake player to join with the nickname of {@link #name}.
-   * If fake player has already been removed - returns.
-   */
   public void join() {
     if (removed) {
       return;
@@ -153,11 +120,6 @@ class FakePlayerImpl implements FakePlayer {
     }, 30 * 20);
   }
 
-  /**
-   * Removes fake player.
-   * Disconnects from server, removes from fake player lists, etc.
-   * Will not try to remove if already removed.
-   */
   public void remove() {
     if (removed) {
       return;
