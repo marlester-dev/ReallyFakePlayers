@@ -43,7 +43,6 @@ public class FakePlayerManager {
   private final FakePlayerFactory fakePlayerFactory;
   private final FakeLister fakeLister;
   private final FakeNamer fakeNamer;
-  private final ComponentLogger logger;
 
   /**
    * Adds a fake player. It's like inviting an imaginary friend to your party.
@@ -54,8 +53,6 @@ public class FakePlayerManager {
   public void add(String name) {
     int maximum = config.getInt("max-fake-players");
     if (fakeLister.getFakePlayers().size() >= maximum) {
-      logger.warn("Couldn't add fakeplayer " + name
-          + " because it exceeds maximum amount of fakeplayers (" + maximum + ").");
       return;
     }
     var possiblePlayer = Bukkit.getPlayerExact(name);

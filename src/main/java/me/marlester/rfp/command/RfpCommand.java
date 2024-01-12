@@ -82,6 +82,11 @@ public class RfpCommand implements CommandExecutor {
           sender.sendMessage("Proper use: add <#/name>");
           break;
         }
+        if (fakeLister.getRawFakePlayers().size() > config.getInt("max-fake-players")) {
+          sender.sendMessage("Unable to add fake player(s), number of fake players exceeds"
+              + " the maximal number of fake players.");
+          break;
+        }
         Integer numbered = Ints.tryParse(args[1]);
         if (numbered != null) {
           fakePlayerManager.addNumber(numbered);
