@@ -19,7 +19,7 @@
 
 # Auto config update system
 # DON'T change this unless you know what you do
-config-version: 1
+config-version: 2
 # Sets the maximum number of fake players that can be created
 max-fake-players: 60
 # Configuration to block players from executing commands
