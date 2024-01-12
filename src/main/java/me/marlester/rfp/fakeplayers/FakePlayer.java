@@ -91,7 +91,7 @@ public interface FakePlayer {
   void setJoinListener(FakePlayerJoinListener value);
 
   /**
-   * Tries to join this fake player to the server.
+   * Tries to connect this fake player to the server.
    */
   void join();
 
