@@ -8,7 +8,7 @@ plugins {
 group = "me.marlester"
 val javaVersion = 17
 val minecraftVersion = "1.20.4"
-version = "3.0.0"
+version = "3.0.1"
 description = "Simulates next-level fake players on a minecraft server."
 
 java {
