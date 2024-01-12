@@ -1,5 +1,5 @@
-# ReallyFakePlayers configuration file
-# Supports PlaceholderAPI
+# MiniMessage & MiniPlaceholders supported
+# The standard time unit here is a second
 # "unset" here means that a value is set to null or simply blank
 #
 # Placeholders:
@@ -20,62 +20,82 @@
 # Auto config update system
 # DON'T change this unless you know what you do
 config-version: 1
+# Sets the maximum number of fake players that can be created
 max-fake-players: 60
-# Staff won't be affected
+# Configuration to block players from executing commands
+# containing fake players' names
+# This won't stop players who have the 'rfp.interaction' permission
 block-interaction:
   enable: true
+  # Message shown upon command block
   message: "<red>Hey, <internal_player_name>!<br>\
     This player is on <yellow>DND</yellow> (Do Not Disturb)!"
-join-message: true
-quit-message: true
+# Fake players will be invulnerable, and can only be damaged by players
+# in creative mode.
 invulnerable: true
+# Fake players won't collide with other entities.
 no-collision: true
+# Fake players won't be affected by gravity.
 no-gravity: true
+# Fake players will get an infinite invisibility effect.
 invisibility-effect: true
 # Value should be a Location object
-# If unset, the default value is assumed to be a server spawn location
-# You can change it in-game with /rfp setspawn
+# If unset, the plugin won't change the spawn location of fake players
+# Sets the spawn location of fake players
+# If you have another plugin installed that changes it, this setting
+# will override it
+# You can change this in-game with /rfp setspawn
 spawn-location:
 # Experimental, may not work perfectly
 # Attempts to hide fake players from all other players
 hide: false
-# Commands on join
+# Commands executed when a fake player joins
 join-commands:
+  # Commands that will be dispatched by the console
   # You are able to unset this to disable this
   as-console:
     - "say Greetings to <internal_player_name>!"
+  # Commands that will be performed by the fake player
   # You are able to unset this to disable this
   as-fake-player:
     - "examplecommand"
-# Commands on quit
+# Commands executed when a fake player quits
 quit-commands:
+  # Commands that will be dispatched by the console
   # You are able to unset this to disable this
   as-console:
     - "say Goodbye, <internal_player_name>!"
+  # Commands that will be performed by the fake player
   # You are able to unset this to disable this
   as-fake-player:
     - "examplecommand"
 # Value should be a string
-# If unset, the default value is assumed to be the server's ip
+# If unset, the default value is assumed to be 'localhost'
+# Custom join IP for fake players
 join-ip:
 # Value should be an integer
 # If unset, the default value is assumed to be the server's port
+# Custom join port for fake players
 join-port:
+# It will automatically add a fake player to the server
+# with a delay that you set beneath
 auto-join:
   enable: true
+  # Delay on the startup
   startup-delay: 3
   delay:
     min: 60
     max: 120
+# Each fake player will leave the server after a delay that you set below
 auto-quit:
   enable: true
   delay:
     min: 360
     max: 1800
+# Fake players will welcome others with a delay that you set beneath
 welcome:
   enable: true
-  # How many fake players can welcome at the period of time below (in seconds)
-  # -1 for unlimited
+  # How many fake players can welcome at a period of time below?
   max-welcomers: 10
   period: 3
   delay:
@@ -97,24 +117,26 @@ welcome:
     - "<internal_rel_2_player_name>!"
     - "Hello <internal_rel_2_player_name>!"
     - "WB <internal_rel_2_player_name>!"
+# Fake players will automatically chat with a delay you set beneath
 chatting:
   enable: true
-  # How many fake players can chat at the period of time below (in seconds)
-  # -1 for unlimited
+  # How many fake players can chat at a period of time below (in seconds)
   max-chatters: 10
   period: 3
+  # Delay for the first message of the fake player
   first-delay:
     min: 10
     max: 80
   delay:
     min: 80
     max: 180
-  # Random messages they will send throughout the time
+  # Random messages fake players will send throughout the time
   messages:
     - "Hello there"
     - "G'day everybody, I am <internal_player_name>"
     - "Anyone wanna talk?"
     - "<server_name> is the best server!"
+# Vault integration - permissions and groups for fake players
 vault-integration:
   enable: false
   # Groups fake players will be granted
@@ -128,16 +150,22 @@ vault-integration:
   # You are able to unset this to disable this
   permissions:
     - "example.permission"
+# Update check configuration
 update-check:
+  # Check updates on the startup?
   on-startup: true
+  # Shall we notify staff when they join?
   notify-staff: true
   # Value should be a string
   # If unset, the default api key will be taken
-  # It's recommended to change the api key to yours for unexplained reasons
+  # Curseforge's API key
+  # It's recommended to change the api key to yours
   curse-api-key:
   # Value should be a string
   # If unset, the default api url will be taken
+  # Curseforge's API url
   curse-api-url:
   # Value should be an integer
   # If unset, the default project id will be taken
+  # Curseforge's project id
   curse-project-id:
