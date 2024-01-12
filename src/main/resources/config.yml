@@ -138,7 +138,7 @@ chatting:
     - "<server_name> is the best server!"
 # Vault integration - permissions and groups for fake players
 vault-integration:
-  enable: false
+  enable: true
   # Groups fake players will be granted
   # A random group will be chosen
   # You are able to unset this to disable this
