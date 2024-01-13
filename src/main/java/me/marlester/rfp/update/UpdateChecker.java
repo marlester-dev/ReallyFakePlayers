@@ -114,7 +114,7 @@ public class UpdateChecker {
       JsonArray dataArray = responseObject.getAsJsonArray("data");
       if (dataArray.isEmpty()) {
         sender.sendMessage(ChatColor.RED + "Error - page is empty! Due to this the update checker"
-            + "couldn't find an update for " + plName + ".");
+            + " couldn't find an update for " + plName + ".");
         return;
       }
       JsonObject fileObject = dataArray.get(0).getAsJsonObject();
