@@ -113,19 +113,17 @@ public class FakePlayerJoinListener implements Listener {
       vaultIntegration.giveGroup(player);
       vaultIntegration.givePermissions(player);
     }
-    var consoleCommands = config.getStringList("join-commands.as-console");
-    if (!consoleCommands.isEmpty()) {
+    config.getOptionalStringList("join-commands.as-console").ifPresent(consoleCommands -> {
       var consoleSender = Bukkit.getConsoleSender();
       consoleCommands.forEach(cmd -> {
         Bukkit.dispatchCommand(consoleSender, miniMsgAsst.deserializeAsPlainText(cmd, player));
       });
-    }
-    var playerCommands = config.getStringList("join-commands.as-fake-player");
-    if (!playerCommands.isEmpty()) {
+    });
+    config.getOptionalStringList("join-commands.as-fake-player").ifPresent(playerCommands -> {
       playerCommands.forEach(cmd -> {
         player.performCommand(miniMsgAsst.deserializeAsPlainText(cmd, player));
       });
-    }
+    });
     chatting.startChatting(fakePlayer);
     if (config.getBoolean("auto-quit.enable")) {
       int delay = 20 * ThreadLocalRandom.current().nextInt(

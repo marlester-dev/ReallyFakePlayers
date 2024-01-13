@@ -69,8 +69,8 @@ public class VaultIntegration {
    * @param player which player should receive the group
    */
   public void giveGroup(Player player) {
-    var groups = config.getStringList("vault-integration.groups");
-    if (groups.isEmpty()) {
+    var groups = config.getOptionalStringList("vault-integration.groups").orElse(null);
+    if (groups == null) {
       return;
     }
     var group = groups.get(ThreadLocalRandom.current().nextInt(groups.size()));
@@ -83,8 +83,8 @@ public class VaultIntegration {
    * @param player which player should receive the permissions
    */
   public void givePermissions(Player player) {
-    var permissions = config.getStringList("vault-integration.permissions");
-    if (permissions.isEmpty()) {
+    var permissions = config.getOptionalStringList("vault-integration.permissions").orElse(null);
+    if (permissions == null) {
       return;
     }
     for (String permission : permissions) {
