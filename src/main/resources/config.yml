@@ -42,8 +42,6 @@ invisibility-effect: true
 # Value should be a Location object
 # If unset, the plugin won't change the spawn location of fake players
 # Sets the spawn location of fake players
-# If you have another plugin installed that changes it, this setting
-# will override it
 # You can change this in-game with /rfp setspawn
 spawn-location:
 # Experimental, may not work perfectly
