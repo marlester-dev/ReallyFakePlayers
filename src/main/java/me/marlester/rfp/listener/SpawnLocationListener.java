@@ -53,9 +53,9 @@ public class SpawnLocationListener implements Listener {
       return;
     }
 
-    var configSpawnLocation = config.getAs("spawn-location", Location.class);
-    if (configSpawnLocation != null) {
-      e.setSpawnLocation(configSpawnLocation);
+    var configSpawnLocation = config.getAsOptional("spawn-location", Location.class);
+    if (configSpawnLocation.isPresent()) {
+      e.setSpawnLocation(configSpawnLocation.get());
     }
   }
 }
