@@ -2,7 +2,7 @@ name: $name
 version: $version
 main: me.marlester.rfp.ReallyFakePlayers
 description: $description
-load: STARTUP
+load: POSTWORLD
 authors:
   - Marlester
   - freethemice
