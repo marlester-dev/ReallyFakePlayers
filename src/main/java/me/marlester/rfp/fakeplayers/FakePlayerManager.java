@@ -113,7 +113,7 @@ public class FakePlayerManager {
   public void removeAll() {
     var fakePlayers = fakeLister.getRawFakePlayers();
     while (!fakePlayers.isEmpty()) {
-      fakePlayers.get(0).remove();
+      fakePlayers.getFirst().remove();
     }
   }
 
@@ -132,7 +132,7 @@ public class FakePlayerManager {
       return;
     }
     for (int i = 0; i < numToRemove; i++) {
-      fakePlayers.get(0).remove();
+      fakePlayers.getFirst().remove();
     }
   }
 }

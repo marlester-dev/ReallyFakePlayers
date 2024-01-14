@@ -21,6 +21,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -53,7 +54,8 @@ public class FakeLister {
    * ⚠ Fakeplayer (data) is added here immediately on fakeplayer creation,
    * you likely don't want it. ⚠<br>
    */
-  private final List<FakePlayer> rawFakePlayers = new ArrayList<>();
+  private final LinkedList<FakePlayer> rawFakePlayers = new LinkedList<>();
+
   /**
    * <h3>What's the difference between the raw and usual fake player?</h3>
    * - Usual fake players are fully initialized.
@@ -93,7 +95,7 @@ public class FakeLister {
    * <br><br>
    * Fakeplayer (data) is added here when they are fully initialized, so with delay.<br>
    */
-  private final List<FakePlayer> fakePlayers = new ArrayList<>();
+  private final LinkedList<FakePlayer> fakePlayers = new LinkedList<>();
 
   /**
    * Key - fakeplayer's name, a string.<br>
