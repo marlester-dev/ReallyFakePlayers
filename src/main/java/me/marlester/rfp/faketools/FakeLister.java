@@ -116,6 +116,7 @@ public class FakeLister {
    * Value - fakeplayer's uuid, a UUID object.<br>
    * <br>
    * ⚠ Managed by the secret class ⚠<br>
+   * ⚠ Fake players' data gets added and deleted from here constantly ⚠<br>
    * ⚠ Fakeplayer (data) is added here immediately on fakeplayer creation,
    * you likely don't want it. ⚠<br>
    */
