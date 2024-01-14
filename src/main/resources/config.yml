@@ -90,7 +90,8 @@ auto-quit:
   delay:
     min: 360
     max: 1800
-# Fake players will welcome others with a delay that you set beneath
+# A random fake player will be taken to welcome a joining player
+# with a delay that you set beneath
 welcome:
   enable: true
   # How many fake players can welcome at a period of time below?
