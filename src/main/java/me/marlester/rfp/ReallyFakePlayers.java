@@ -36,6 +36,7 @@ import me.marlester.rfp.minimessage.MiniMessageModule;
 import me.marlester.rfp.placeholders.PlaceholdersModule;
 import me.marlester.rfp.update.UpdateChecker;
 import me.marlester.rfp.vault.VaultIntegration;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -73,10 +74,12 @@ public final class ReallyFakePlayers extends JavaPlugin {
         .register();
 
     injector.getInstance(AutoJoin.class).startAutoJoin();
-    var config = injector.getInstance(Key.get(YamlDocument.class, Names.named("config")));
-    if (config.getBoolean("update-check.on-startup")) {
-      injector.getInstance(UpdateChecker.class).checkUpdatesConsole();
-    }
+    Bukkit.getScheduler().runTaskLater(this, () -> {
+      var config = injector.getInstance(Key.get(YamlDocument.class, Names.named("config")));
+      if (config.getBoolean("update-check.on-startup")) {
+        injector.getInstance(UpdateChecker.class).checkUpdatesConsole();
+      }
+    }, 1);
   }
 
   @Override
