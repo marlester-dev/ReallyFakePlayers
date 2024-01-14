@@ -55,10 +55,6 @@ public class FakePlayerManager {
     if (fakeLister.getFakePlayers().size() >= maximum) {
       return;
     }
-    var possiblePlayer = Bukkit.getPlayerExact(name);
-    if (possiblePlayer != null) {
-      possiblePlayer.kick();
-    }
     fakePlayerFactory.create(name).join();
   }
 

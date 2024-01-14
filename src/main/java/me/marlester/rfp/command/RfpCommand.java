@@ -99,6 +99,10 @@ public class RfpCommand implements CommandExecutor {
                 + " the maximal number of fake players.");
             break;
           }
+          if (fakeLister.getRawFakePlayersByName().containsKey(args[1])) {
+            sender.sendMessage("Fake player " + args[1] + " already exists!");
+            break;
+          }
           fakePlayerManager.add(args[1]);
           sender.sendMessage("Added fake player with name " + args[1] + ".");
         }
