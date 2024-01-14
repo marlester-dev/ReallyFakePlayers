@@ -88,6 +88,7 @@ public class LoginListenerEditor {
                     if (newUuid != null) {
                       isFakePlayer = true;
                       this.%5$s.spoofedUUID = newUuid;
+                      fakePlayerUuidsByKey.remove(key);
                     }
                   }
                   $_ = $proceed($$) && !isFakePlayer;
