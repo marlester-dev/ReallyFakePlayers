@@ -77,28 +77,28 @@ public class LoginListenerEditor {
            */
           String code = String.format("""
               {
-                  try {
-                      boolean isFakePlayer = false;
-                      java.util.UUID key = packet.%4$s();
-                      if (key != null) {
-                          Class secretClass = Class.forName("%2$s");
-                          java.util.Map fakePlayerUuidsByKey = (java.util.Map) secretClass
-                               .getDeclaredField("%3$s").get(null);
-                          java.util.UUID newUuid = (java.util.UUID) fakePlayerUuidsByKey.get(key);
-                          if (newUuid != null) {
-                             isFakePlayer = true;
-                             this.%5$s.spoofedUUID = newUuid;
-                          }
-                      }
-                      $_ = $proceed($$) && !isFakePlayer;
-                  } catch (Exception e) {
-                      $_ = $proceed($$);
-                      org.bukkit.Bukkit.getLogger().log(
-                        java.util.logging.Level.SEVERE,
-                        "[%1$s] Error while catching fakeplayer in loginlistener!",
-                        e
-                      );
+                try {
+                  boolean isFakePlayer = false;
+                  java.util.UUID key = packet.%4$s();
+                  if (key != null) {
+                    Class secretClass = Class.forName("%2$s");
+                    java.util.Map fakePlayerUuidsByKey = (java.util.Map) secretClass
+                        .getDeclaredField("%3$s").get(null);
+                    java.util.UUID newUuid = (java.util.UUID) fakePlayerUuidsByKey.get(key);
+                    if (newUuid != null) {
+                      isFakePlayer = true;
+                      this.%5$s.spoofedUUID = newUuid;
+                    }
                   }
+                  $_ = $proceed($$) && !isFakePlayer;
+                } catch (Exception e) {
+                  $_ = $proceed($$);
+                  org.bukkit.Bukkit.getLogger().log(
+                      java.util.logging.Level.SEVERE,
+                      "[%1$s] Error while catching fakeplayer in loginlistener!",
+                      e
+                  );
+                }
               }
               """,
               pluginName,
