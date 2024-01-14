@@ -52,7 +52,7 @@ public class FakePlayerManager {
    */
   public void add(String name) {
     int maximum = config.getInt("max-fake-players");
-    if (fakeLister.getFakePlayers().size() >= maximum) {
+    if (fakeLister.getRawFakePlayers().size() >= maximum) {
       return;
     }
     fakePlayerFactory.create(name).join();
