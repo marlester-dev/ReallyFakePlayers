@@ -25,8 +25,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import me.marlester.rfp.faketools.FakeLister;
 import me.marlester.rfp.faketools.FakeNamer;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.ApiStatus;
 
 /**
