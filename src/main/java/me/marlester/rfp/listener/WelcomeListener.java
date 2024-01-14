@@ -23,6 +23,7 @@ import com.google.inject.name.Named;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -30,12 +31,13 @@ import me.marlester.rfp.ReallyFakePlayers;
 import me.marlester.rfp.fakeplayers.FakePlayer;
 import me.marlester.rfp.faketools.FakeLister;
 import me.marlester.rfp.minimessage.MiniMsgAsst;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  * Class used for forcing fakeplayers to welcome incoming players.
@@ -50,6 +52,7 @@ public class WelcomeListener implements Listener {
   private final ReallyFakePlayers pl;
   private final MiniMsgAsst miniMsgAsst;
 
+  private final List<String> welcomed = new ArrayList<>();
   private final List<FakePlayer> welcomers = new ArrayList<>();
 
   /**
@@ -63,6 +66,19 @@ public class WelcomeListener implements Listener {
     if (!config.getBoolean("welcome.enable")) {
       return;
     }
+    var player = e.getPlayer();
+    var name = player.getName();
+    if (welcomed.contains(name)) {
+      return;
+    } else {
+      welcomed.add(name);
+      new BukkitRunnable() {
+        @Override
+        public void run() {
+          welcomed.remove(name);
+        }
+      }.runTaskLater(pl, 20L * config.getInt("welcome.frequency"));
+    }
     if (welcomers.size() >= config.getInt("welcome.max-welcomers")) {
       return;
     }
@@ -70,11 +86,13 @@ public class WelcomeListener implements Listener {
     if (fakePlayers.isEmpty()) {
       return;
     }
+    if (ThreadLocalRandom.current().nextInt(100) > config.getInt("welcome.chance")) {
+      return;
+    }
     int delay = 20 * ThreadLocalRandom.current().nextInt(
         config.getInt("welcome.delay.min"),
         config.getInt("welcome.delay.max") + 1
     );
-    var player = e.getPlayer();
     var scheduler = Bukkit.getScheduler();
     scheduler.runTaskLater(pl, () -> {
       // Better safe than sorry

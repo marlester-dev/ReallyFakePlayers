@@ -94,6 +94,10 @@ auto-quit:
 # with a delay that you set beneath
 welcome:
   enable: true
+  # Chance of being welcomed by fake players
+  chance: 50
+  # How often can a player be welcomed by fake players?
+  frequency: 30
   # How many fake players can welcome at a period of time below?
   max-welcomers: 10
   period: 3
