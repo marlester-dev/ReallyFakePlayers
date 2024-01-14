@@ -64,6 +64,13 @@ public class WelcomeListener implements Listener {
     if (!config.getBoolean("welcome.enable")) {
       return;
     }
+    var fakePlayers = fakeLister.getFakePlayers();
+    if (fakePlayers.isEmpty()) {
+      return;
+    }
+    if (welcomers.size() >= config.getInt("welcome.max-welcomers")) {
+      return;
+    }
     var player = e.getPlayer();
     var name = player.getName();
     if (welcomed.contains(name)) {
@@ -76,13 +83,6 @@ public class WelcomeListener implements Listener {
           welcomed.remove(name);
         }
       }.runTaskLater(pl, 20L * config.getInt("welcome.frequency"));
-    }
-    if (welcomers.size() >= config.getInt("welcome.max-welcomers")) {
-      return;
-    }
-    var fakePlayers = fakeLister.getFakePlayers();
-    if (fakePlayers.isEmpty()) {
-      return;
     }
     if (ThreadLocalRandom.current().nextInt(100) > config.getInt("welcome.chance")) {
       return;
