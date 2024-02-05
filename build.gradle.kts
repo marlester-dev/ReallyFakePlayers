@@ -3,6 +3,7 @@ plugins {
   id("io.papermc.paperweight.userdev") version "1.5.11"
   id("xyz.jpenilla.run-paper") version "2.2.2" // Adds runServer and runMojangMappedServer tasks for testing
   id("com.github.johnrengelman.shadow") version "8.1.1"
+  id("dev.racci.slimjar") version "1.6.1"
 }
 
 group = "me.marlester"
@@ -17,6 +18,9 @@ java {
 }
 
 repositories {
+  maven {
+    url = uri("https://repo.racci.dev/releases")
+  }
   mavenCentral {
     content {
       includeModule("org.projectlombok", "lombok")
@@ -66,20 +70,23 @@ dependencies {
   compileOnly("org.projectlombok:lombok:$lombokVersion")
   annotationProcessor("org.projectlombok:lombok:$lombokVersion")
 
+  implementation("dev.racci.slimjar:slimjar:1.6.1")
   val guiceVersion = "7.0.0"
-  implementation("com.google.inject:guice:$guiceVersion")
-  implementation("com.google.inject.extensions:guice-assistedinject:$guiceVersion")
-  implementation("xyz.jpenilla:reflection-remapper:0.1.0")
-  implementation("com.github.steveice10:mcprotocollib:1.20.4-1")
-  implementation("org.javassist:javassist:3.30.2-GA")
-  implementation("net.bytebuddy:byte-buddy-agent:1.14.11")
-  implementation("dev.dejvokep:boosted-yaml-spigot:1.4")
+  slim("com.google.inject:guice:$guiceVersion")
+  slim("com.google.inject.extensions:guice-assistedinject:$guiceVersion")
+  slim("xyz.jpenilla:reflection-remapper:0.1.0")
+  slim("com.github.steveice10:mcprotocollib:1.20.4-1")
+  slim("org.javassist:javassist:3.30.2-GA")
+  slim("net.bytebuddy:byte-buddy-agent:1.14.11")
+  slim("dev.dejvokep:boosted-yaml-spigot:1.4")
 }
 
 tasks {
 
   // reobfJar automatically executes shadowJar in build.
   shadowJar {
+    dependsOn(slimJar)
+    relocate("io.github.slimjar", "me.marlester.rfp.relocslimjar")
     // Include a license file.
     from("LICENSE_reallyfakeplayers")
 

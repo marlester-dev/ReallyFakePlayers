@@ -23,6 +23,9 @@ import com.google.inject.Key;
 import com.google.inject.name.Names;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import io.github.miniplaceholders.api.Expansion;
+import io.github.slimjar.app.builder.ApplicationBuilder;
+import java.io.File;
+import java.nio.file.Path;
 import me.marlester.rfp.autojoin.AutoJoin;
 import me.marlester.rfp.bytecodeedit.BytecodeEditingRegisterer;
 import me.marlester.rfp.command.CommandsRegisterer;
@@ -56,6 +59,15 @@ public final class ReallyFakePlayers extends JavaPlugin {
 
   @Override
   public void onEnable() {
+    try {
+      getLogger().info("Looking up libraries...");
+      ApplicationBuilder
+          .appending("reallyfakeplayers")
+          .downloadDirectoryPath(Path.of(getDataFolder() + File.separator + "libs"))
+          .build();
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
     injector = Guice.createInjector(
         new MainModule(this),
         new ConfigsModule(),
