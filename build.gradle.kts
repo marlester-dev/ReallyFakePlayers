@@ -81,7 +81,26 @@ dependencies {
   slim("dev.dejvokep:boosted-yaml-spigot:1.4")
 }
 
+private fun prependRelocationPrefix(pakage: String): String {
+  return "me.marlester.rfp.relocated" + pakage
+}
+
 tasks {
+
+  slimJar {
+    relocate("xyz.jpenilla.reflectionremapper", prependRelocationPrefix("reflectionremapper"))
+    relocate("dev.devjokep.boostedyaml", prependRelocationPrefix("boostedyml"))
+    relocate("com.google", prependRelocationPrefix("google"))
+    relocate("com.github.steveice10", prependRelocationPrefix("steveice10"))
+    relocate("io.netty", prependRelocationPrefix("ionetty"))
+    relocate("it.unimi.dsi.fastutil", prependRelocationPrefix("fastutil"))
+    relocate("javax", prependRelocationPrefix("javax"))
+    relocate("net.bytebuddy.agent", prependRelocationPrefix("bytebuddyagent"))
+    relocate("net.fabricmc", prependRelocationPrefix("fabricmc"))
+    relocate("javassist", prependRelocationPrefix("javaassist"))
+    relocate("jakarta", prependRelocationPrefix("jakarta"))
+    relocate("net.kyori", prependRelocationPrefix("kyori"))
+  }
 
   // reobfJar automatically executes shadowJar in build.
   shadowJar {
