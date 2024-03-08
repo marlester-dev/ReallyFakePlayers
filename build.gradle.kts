@@ -18,6 +18,10 @@ java {
 }
 
 repositories {
+
+  maven {
+    url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+  }
   maven {
     url = uri("https://repo.racci.dev/releases")
   }
@@ -82,14 +86,14 @@ dependencies {
 }
 
 private fun prependRelocationPrefix(pakage: String): String {
-  return "me.marlester.rfp.relocated" + pakage
+  return "me.marlester.rfp.relocated." + pakage
 }
 
 tasks {
 
   slimJar {
     relocate("xyz.jpenilla.reflectionremapper", prependRelocationPrefix("reflectionremapper"))
-    relocate("dev.devjokep.boostedyaml", prependRelocationPrefix("boostedyml"))
+    relocate("dev.dejvokep.boostedyaml", prependRelocationPrefix("boostedyml"))
     relocate("com.google", prependRelocationPrefix("google"))
     relocate("com.github.steveice10", prependRelocationPrefix("steveice10"))
     relocate("io.netty", prependRelocationPrefix("ionetty"))
@@ -99,7 +103,6 @@ tasks {
     relocate("net.fabricmc", prependRelocationPrefix("fabricmc"))
     relocate("javassist", prependRelocationPrefix("javaassist"))
     relocate("jakarta", prependRelocationPrefix("jakarta"))
-    relocate("net.kyori", prependRelocationPrefix("kyori"))
   }
 
   // reobfJar automatically executes shadowJar in build.

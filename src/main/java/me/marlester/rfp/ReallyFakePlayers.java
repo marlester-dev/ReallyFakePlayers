@@ -25,7 +25,9 @@ import dev.dejvokep.boostedyaml.YamlDocument;
 import io.github.miniplaceholders.api.Expansion;
 import io.github.slimjar.app.builder.ApplicationBuilder;
 import java.io.File;
+import java.net.URL;
 import java.nio.file.Path;
+import lombok.Lombok;
 import me.marlester.rfp.autojoin.AutoJoin;
 import me.marlester.rfp.bytecodeedit.BytecodeEditingRegisterer;
 import me.marlester.rfp.command.CommandsRegisterer;
@@ -66,7 +68,7 @@ public final class ReallyFakePlayers extends JavaPlugin {
           .downloadDirectoryPath(Path.of(getDataFolder() + File.separator + "libs"))
           .build();
     } catch (Exception e) {
-      throw new RuntimeException(e);
+      throw Lombok.sneakyThrow(e);
     }
     injector = Guice.createInjector(
         new MainModule(this),
