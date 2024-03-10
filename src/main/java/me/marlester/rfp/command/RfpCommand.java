@@ -17,6 +17,7 @@
 
 package me.marlester.rfp.command;
 
+import static org.incendo.cloud.description.CommandDescription.commandDescription;
 import static org.incendo.cloud.parser.standard.StringParser.stringParser;
 
 import com.google.common.primitives.Ints;
@@ -34,8 +35,12 @@ import me.marlester.rfp.util.PermUtils;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
+import org.incendo.cloud.description.CommandDescription;
 import org.incendo.cloud.paper.PaperCommandManager;
 
+/**
+ * Class responsible for creating the /rfp command, the main command of the plugin.
+ */
 @RequiredArgsConstructor(onConstructor_ = {@Inject}, access = AccessLevel.PACKAGE)
 @Singleton
 public class RfpCommand {
@@ -50,10 +55,14 @@ public class RfpCommand {
 
   public static final String COMMAND_NAME = "rfp";
 
+  /**
+   * Registers the /rfp command with all its subcommands.
+   */
   public void registerCommand() {
     var commandBuilder = manager.commandBuilder(COMMAND_NAME)
         .permission(new StringBuilder(PermUtils.PERMISSIONS_PREFIX).append("admin").toString());
     manager.command(commandBuilder
+        .commandDescription(commandDescription("Reloads plugin's config."))
         .literal("reload")
         .handler(ctx -> {
           try {
@@ -66,6 +75,7 @@ public class RfpCommand {
           }
         }).build());
     manager.command(commandBuilder
+        .commandDescription(commandDescription("Adds fake players, accepts number or name."))
         .literal("add")
         .required("string", stringParser())
         .handler(ctx -> {
@@ -93,6 +103,7 @@ public class RfpCommand {
           }
         }).build());
     manager.command(commandBuilder
+        .commandDescription(commandDescription("Removes fake players, accepts number or name."))
         .literal("remove")
         .required("string", stringParser())
         .handler(ctx -> {
@@ -114,6 +125,7 @@ public class RfpCommand {
           }
         }).build());
     manager.command(commandBuilder
+        .commandDescription(commandDescription("Gives you a list of online fake players."))
         .literal("list")
         .handler(ctx -> {
           ctx.sender().sendMessage("There are %s of a max of %s fake players online:".formatted(
@@ -123,11 +135,14 @@ public class RfpCommand {
           fakeLister.getFakePlayersByName().keySet().forEach(ctx.sender()::sendMessage);
         }).build());
     manager.command(commandBuilder
+        .commandDescription(commandDescription("Checks for updates."))
         .literal("checkupdates")
         .handler(ctx -> {
           updateChecker.checkUpdates(ctx.sender());
         }).build());
     manager.command(commandBuilder
+        .commandDescription(commandDescription("Sets fake players' spawn location to your current"
+            + " location, once set you may further edit it in config."))
         .literal("setspawn")
         .handler(ctx -> {
           if (ctx.sender() instanceof Entity entity) {

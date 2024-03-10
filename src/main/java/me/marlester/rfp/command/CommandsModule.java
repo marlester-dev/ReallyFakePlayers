@@ -26,6 +26,9 @@ import org.incendo.cloud.SenderMapper;
 import org.incendo.cloud.execution.ExecutionCoordinator;
 import org.incendo.cloud.paper.PaperCommandManager;
 
+/**
+ * Module used for providing the command manager.
+ */
 public class CommandsModule extends AbstractModule {
 
   @Provides
