@@ -159,6 +159,8 @@ public class RfpCommand {
                   + " in the config, log is in the console!");
               logger.error("Error while setting spawn location in config!", e);
             }
+          } else {
+            ctx.sender().sendMessage("You must be an entity to execute this command.");
           }
         })
         .commandDescription(commandDescription("Sets fake players' spawn location to your current"
