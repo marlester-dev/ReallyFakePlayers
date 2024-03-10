@@ -1,19 +1,19 @@
 name: $name
 version: $version
+api-version: "$apiVersion"
 main: me.marlester.rfp.ReallyFakePlayers
+loader: me.marlester.rfp.ReallyFakePlayersLoader
 description: $description
 load: POSTWORLD
 authors:
   - Marlester
   - freethemice
-api-version: "$apiVersion"
-depend:
-  - MiniPlaceholders
-softdepend:
-  - Vault
 website: "https://dev.bukkit.org/projects/really-fake-players"
-commands:
-  rfp:
-    description: "Main plugin's command, type it for help."
-    aliases:
-      - reallyfakeplayers
+dependencies:
+  server:
+    MiniPlaceholders:
+      load: BEFORE
+      required: true
+    Vault:
+      load: BEFORE
+      required: false

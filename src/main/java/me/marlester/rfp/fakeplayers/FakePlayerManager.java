@@ -80,7 +80,7 @@ public class FakePlayerManager {
    *                   it's just a bunch of code.
    * @see FakePlayer#remove()
    */
-  @ApiStatus.Obsolete
+  @Deprecated
   public void remove(FakePlayer fakePlayer) {
     fakePlayer.remove();
   }
