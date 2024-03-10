@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 import me.marlester.rfp.command.RfpCommand;
 import me.marlester.rfp.faketools.FakeLister;
 import me.marlester.rfp.minimessage.MiniMsgAsst;
-import me.marlester.rfp.util.PermCheckUtils;
+import me.marlester.rfp.util.PermUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -55,7 +55,7 @@ public class CommandBlockerListener implements Listener {
   public void onPlayerCommand(PlayerCommandPreprocessEvent e) {
     var player = e.getPlayer();
     if (!config.getBoolean("block-interaction.enable")
-        || PermCheckUtils.hasPermission("interaction", player)) {
+        || PermUtils.hasPermission("interaction", player)) {
       return;
     }
     String command = e.getMessage().toLowerCase();

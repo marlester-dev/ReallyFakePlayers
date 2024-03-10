@@ -31,6 +31,7 @@ dependencies {
     compileOnly("com.github.steveice10:mcprotocollib:1.20.4-1")
     compileOnly("dev.dejvokep:boosted-yaml-spigot:1.4")
     compileOnly("xyz.jpenilla:reflection-remapper:0.1.0")
+    compileOnly("org.incendo:cloud-paper:2.0.0-beta.4")
 }
 
 tasks {

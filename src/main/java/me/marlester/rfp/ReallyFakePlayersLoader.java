@@ -41,6 +41,8 @@ public class ReallyFakePlayersLoader implements PluginLoader {
         "dev.dejvokep:boosted-yaml-spigot:1.4"), null));
     resolver.addDependency(new Dependency(new DefaultArtifact(
         "xyz.jpenilla:reflection-remapper:0.1.0"), null));
+    resolver.addDependency(new Dependency(new DefaultArtifact(
+        "org.incendo:cloud-paper:2.0.0-beta.4"), null));
 
     classpathBuilder.addLibrary(resolver);
   }

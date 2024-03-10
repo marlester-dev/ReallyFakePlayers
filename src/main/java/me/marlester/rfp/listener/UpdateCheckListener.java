@@ -24,7 +24,7 @@ import dev.dejvokep.boostedyaml.YamlDocument;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import me.marlester.rfp.update.UpdateChecker;
-import me.marlester.rfp.util.PermCheckUtils;
+import me.marlester.rfp.util.PermUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -52,7 +52,7 @@ public class UpdateCheckListener implements Listener {
       return;
     }
     var player = e.getPlayer();
-    if (!PermCheckUtils.hasPermission("admin", player)) {
+    if (!PermUtils.hasPermission("admin", player)) {
       return;
     }
     updateChecker.checkUpdates(player);

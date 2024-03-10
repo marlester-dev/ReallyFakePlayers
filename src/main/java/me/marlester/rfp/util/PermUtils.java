@@ -21,10 +21,10 @@ import lombok.experimental.UtilityClass;
 import org.bukkit.command.CommandSender;
 
 /**
- * Utils related to checking permissions.
+ * Utils related to permissions.
  */
 @UtilityClass
-public class PermCheckUtils {
+public class PermUtils {
 
   /**
    * Prefix used for all permissions of this plugin.
