@@ -15,6 +15,15 @@ repositories {
 dependencies {
     paperweight.paperDevBundle("1.20.4-R0.1-SNAPSHOT")
 
+    compileOnly("org.jetbrains:annotations:24.1.0")
+    compileOnly("org.projectlombok:lombok:1.18.30")
+    annotationProcessor("org.projectlombok:lombok:1.18.30")
+
+    compileOnly("io.github.miniplaceholders:miniplaceholders-api:2.2.3")
+    compileOnly("com.github.MilkBowl:VaultAPI:1.7") {
+        exclude(group = "org.bukkit", module = "bukkit")
+    }
+
     compileOnly("com.google.inject:guice:7.0.0")
     compileOnly("com.google.inject.extensions:guice-assistedinject:7.0.0")
     compileOnly("org.javassist:javassist:3.30.2-GA")
@@ -22,15 +31,6 @@ dependencies {
     compileOnly("com.github.steveice10:mcprotocollib:1.20.4-1")
     compileOnly("dev.dejvokep:boosted-yaml-spigot:1.4")
     compileOnly("xyz.jpenilla:reflection-remapper:0.1.0")
-
-    compileOnly("io.github.miniplaceholders:miniplaceholders-api:2.2.3")
-    compileOnly("com.github.MilkBowl:VaultAPI:1.7") {
-        exclude(group = "org.bukkit", module = "bukkit")
-    }
-
-    compileOnly("org.jetbrains:annotations:24.0.1")
-    compileOnly("org.projectlombok:lombok:1.18.30")
-    annotationProcessor("org.projectlombok:lombok:1.18.30")
 }
 
 tasks {
