@@ -1,21 +1,6 @@
-/*
- * Copyright 2023 Marlester
- *
- * Licensed under the EUPL, Version 1.2 (the "License");
- *
- * You may not use this work except in compliance with the License.
- * You may obtain a copy of the License at:
- *
- * https://joinup.ec.europa.eu/software/page/eupl
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an "AS IS" basis,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions
- * and limitations under the License.
- */
-
 package me.marlester.rfp.command;
+
+import static org.incendo.cloud.parser.standard.StringParser.stringParser;
 
 import com.google.common.primitives.Ints;
 import com.google.inject.Inject;
@@ -28,157 +13,125 @@ import lombok.RequiredArgsConstructor;
 import me.marlester.rfp.fakeplayers.FakePlayerManager;
 import me.marlester.rfp.faketools.FakeLister;
 import me.marlester.rfp.update.UpdateChecker;
-import me.marlester.rfp.util.PermCheckUtils;
+import me.marlester.rfp.util.PermUtils;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
+import org.incendo.cloud.Command;
+import org.incendo.cloud.description.CommandDescription;
+import org.incendo.cloud.paper.PaperCommandManager;
 
-/**
- * Class implementing the /rfp command.
- * The main plugin's command having lots of subcommands.
- */
 @RequiredArgsConstructor(onConstructor_ = {@Inject}, access = AccessLevel.PACKAGE)
 @Singleton
-public class RfpCommand implements CommandExecutor {
+public class RfpCommand {
 
-  /**
-   * The name of the command well-known in this class.
-   */
-  public static final String COMMAND_NAME = "rfp";
-
-  private final ComponentLogger logger;
+  private final PaperCommandManager<CommandSender> manager;
   @Named("config")
   private final YamlDocument config;
-  private final FakePlayerManager fakePlayerManager;
+  private final ComponentLogger logger;
   private final FakeLister fakeLister;
+  private final FakePlayerManager fakePlayerManager;
   private final UpdateChecker updateChecker;
 
-  @Override
-  public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-    if (!(PermCheckUtils.hasPermission("admin", sender))) {
-      sender.sendMessage("You do not have appropriate permissions to execute this command!");
-      return true;
-    }
-    if (args.length <= 0) {
-      help(sender);
-      return true;
-    }
+  public static final String COMMAND_NAME = "rfp";
 
-    switch (args[0]) {
-      case "reload" -> {
-        try {
-          config.reload();
-        } catch (IOException e) {
-          sender.sendMessage("Something went wrong while config reload, log is in console!");
-          logger.error("Error while reloading config!", e);
-          break;
-        }
-        sender.sendMessage("Config reloaded.");
-      }
-      case "add" -> {
-        if (args.length <= 1) {
-          sender.sendMessage("Proper use: add <#/name>");
-          break;
-        }
-        var fakePlayersNumber = fakeLister.getRawFakePlayers().size();
-        var maxFakePlayers = config.getInt("max-fake-players");
-        Integer numbered = Ints.tryParse(args[1]);
-        if (numbered != null) {
-          if ((numbered + fakePlayersNumber) > maxFakePlayers) {
-            sender.sendMessage("Unable to add fake players, number of fake players exceeds"
-                + " the maximal number of fake players.");
-            break;
+  private Command<? extends CommandSender> command;
+
+  /**
+   * Constructs or gets you a command with the {@link #COMMAND_NAME}.
+   */
+  public Command<? extends CommandSender> getCommand() {
+    if (command != null) {
+      return command;
+    }
+    command = manager.commandBuilder(COMMAND_NAME)
+        .permission(new StringBuilder(PermUtils.PERMISSIONS_PREFIX).append("admin").toString())
+        .commandDescription(CommandDescription.commandDescription(""))
+        .literal("reload")
+        .handler(ctx -> {
+          try {
+            config.reload();
+            ctx.sender().sendMessage("Config reloaded.");
+          } catch (IOException e) {
+            ctx.sender().sendMessage("Something went wrong whilst config was reloading,"
+                + "the error log is in your console!");
+            logger.error("Error while config was reloading!", e);
           }
-          fakePlayerManager.addNumber(numbered);
-          sender.sendMessage("Added fake players number " + args[1] + ".");
-        } else {
-          if (fakePlayersNumber >= maxFakePlayers) {
-            sender.sendMessage("Unable to add a fake player, number of fake players exceeds"
-                + " the maximal number of fake players.");
-            break;
-          }
-          if (fakeLister.getRawFakePlayersByName().containsKey(args[1])) {
-            sender.sendMessage("Fake player " + args[1] + " already exists!");
-            break;
-          }
-          fakePlayerManager.add(args[1]);
-          sender.sendMessage("Added fake player with name " + args[1] + ".");
-        }
-      }
-      case "remove" -> {
-        if (args.length <= 1) {
-          sender.sendMessage("Proper use: remove <#/name>");
-          break;
-        }
-        if (args[1].equalsIgnoreCase("all")) {
-          fakePlayerManager.removeAll();
-        } else {
-          Integer numbered = Ints.tryParse(args[1]);
+        })
+        .literal("add")
+        .required("string", stringParser())
+        .handler(ctx -> {
+          var fakePlayersNumber = fakeLister.getRawFakePlayers().size();
+          var maxFakePlayers = config.getInt("max-fake-players");
+          Integer numbered = Ints.tryParse(ctx.get("string"));
           if (numbered != null) {
-            fakePlayerManager.removeNumber(numbered);
-            sender.sendMessage(args[1] + " fake players were removed.");
-          } else {
-            if (fakeLister.getRawFakePlayersByName().containsKey(args[1])) {
-              fakePlayerManager.remove(args[1]);
-              sender.sendMessage(args[1] + " fake player was removed.");
+            if ((numbered + fakePlayersNumber) > maxFakePlayers) {
+              ctx.sender().sendMessage("Unable to add fake players, number"
+                  + " of fake players exceeds the maximal number of fake players.");
             } else {
-              sender.sendMessage(args[1] + " no fake player with that name.");
+              fakePlayerManager.addNumber(numbered);
+              ctx.sender().sendMessage("Added fake players number " + numbered + ".");
+            }
+          } else {
+            if (fakePlayersNumber >= maxFakePlayers) {
+              ctx.sender().sendMessage("Unable to add a fake player, number of "
+                  + "fake players exceeds the maximal number of fake players.");
+            } else if (fakeLister.getRawFakePlayersByName().containsKey(ctx.get("string"))) {
+              ctx.sender().sendMessage("Fake player " + ctx.get("string") + " already exists!");
+            } else {
+              fakePlayerManager.add(ctx.get("string"));
+              ctx.sender().sendMessage("Added fake player named " + ctx.get("string") + ".");
             }
           }
-        }
-      }
-      case "list" -> {
-        sender.sendMessage("There are %s of a max of %s fake players online:".formatted(
-            fakeLister.getFakePlayers().size(),
-            config.getInt("max-fake-players")
-        ));
-        fakeLister.getFakePlayersByName().keySet().forEach(sender::sendMessage);
-      }
-      case "checkupdates" -> {
-        updateChecker.checkUpdates(sender);
-      }
-      case "setspawn" -> {
-        if (!(sender instanceof Entity entity)) {
-          sender.sendMessage("You must be an entity to execute this!");
-          break;
-        }
-        try {
-          config.set("spawn-location", entity.getLocation());
-          config.save();
-        } catch (IOException e) {
-          sender.sendMessage("Something went wrong while setting a spawn location in the config, "
-              + "log is in the console!");
-          logger.error("Error while setting spawn location in config!", e);
-          break;
-        }
-        sender.sendMessage("Set fake players' spawn location to your current location.");
-      }
-      default -> {
-        help(sender);
-      }
-    }
-
-    return true;
+        })
+        .literal("remove")
+        .required("string", stringParser())
+        .handler(ctx -> {
+          if (((String) ctx.get("string")).equalsIgnoreCase("all")) {
+            fakePlayerManager.removeAll();
+          } else {
+            Integer numbered = Ints.tryParse(ctx.get("string"));
+            if (numbered != null) {
+              fakePlayerManager.removeNumber(numbered);
+              ctx.sender().sendMessage("Attempted to remove " + numbered + " fake players.");
+            } else {
+              if (fakeLister.getRawFakePlayersByName().containsKey(ctx.get("string"))) {
+                fakePlayerManager.remove((String) ctx.get("string"));
+                ctx.sender().sendMessage(ctx.get("string") + " fake player was removed.");
+              } else {
+                ctx.sender().sendMessage(ctx.get("string") + " no fake player with that name.");
+              }
+            }
+          }
+        })
+        .literal("list")
+        .handler(ctx -> {
+          ctx.sender().sendMessage("There are %s of a max of %s fake players online:".formatted(
+              fakeLister.getFakePlayers().size(),
+              config.getInt("max-fake-players")
+          ));
+          fakeLister.getFakePlayersByName().keySet().forEach(ctx.sender()::sendMessage);
+        })
+        .literal("checkupdates")
+        .handler(ctx -> {
+          updateChecker.checkUpdates(ctx.sender());
+        })
+        .literal("setspawn")
+        .handler(ctx -> {
+          if (ctx.sender() instanceof Entity entity) {
+            try {
+              config.set("spawn-location", entity.getLocation());
+              config.save();
+              ctx.sender().sendMessage("Set spawn location of fake players to your"
+                  + " current location.");
+            } catch (IOException e) {
+              ctx.sender().sendMessage("Something went wrong while setting a spawn location"
+                  + " in the config, log is in the console!");
+              logger.error("Error while setting spawn location in config!", e);
+            }
+          }
+        })
+        .build();
+    return command;
   }
-
-  private void help(CommandSender sender) {
-    sender.sendMessage(
-        "The command \"/" + COMMAND_NAME + "\" doesn't do anything by itself,",
-        "Please provide a subcommand - \"/" + COMMAND_NAME + " <subcommand>\",",
-        "Here is a list of valid subcommands:",
-        "help - help command",
-        "add <#> - add number of fake players",
-        "add <name> - add fake player",
-        "remove <#> - remove number of fake players",
-        "remove <name> - remove fake player",
-        "remove all - remove all fake players",
-        "list - list of fake players",
-        "reload - reload config",
-        "setspawn - set fake players' spawn location where you stay",
-        "checkupdates - check updates"
-    );
-  }
-
 }
