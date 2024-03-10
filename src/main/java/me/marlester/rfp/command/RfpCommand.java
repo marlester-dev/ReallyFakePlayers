@@ -35,7 +35,6 @@ import me.marlester.rfp.util.PermUtils;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
-import org.incendo.cloud.description.CommandDescription;
 import org.incendo.cloud.paper.PaperCommandManager;
 
 /**
