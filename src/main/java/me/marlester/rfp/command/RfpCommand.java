@@ -62,7 +62,6 @@ public class RfpCommand {
     var commandBuilder = manager.commandBuilder(COMMAND_NAME)
         .permission(new StringBuilder(PermUtils.PERMISSIONS_PREFIX).append("admin").toString());
     manager.command(commandBuilder
-        .commandDescription(commandDescription("Reloads plugin's config."))
         .literal("reload")
         .handler(ctx -> {
           try {
@@ -73,9 +72,10 @@ public class RfpCommand {
                 + "the error log is in your console!");
             logger.error("Error while config was reloading!", e);
           }
-        }).build());
+        })
+        .commandDescription(commandDescription("Reloads plugin's config."))
+        .build());
     manager.command(commandBuilder
-        .commandDescription(commandDescription("Adds fake players, accepts number or name."))
         .literal("add")
         .required("string", stringParser())
         .handler(ctx -> {
@@ -101,9 +101,10 @@ public class RfpCommand {
               ctx.sender().sendMessage("Added fake player named " + ctx.get("string") + ".");
             }
           }
-        }).build());
+        })
+        .commandDescription(commandDescription("Adds fake players, accepts number or name."))
+        .build());
     manager.command(commandBuilder
-        .commandDescription(commandDescription("Removes fake players, accepts number or name."))
         .literal("remove")
         .required("string", stringParser())
         .handler(ctx -> {
@@ -123,9 +124,10 @@ public class RfpCommand {
               }
             }
           }
-        }).build());
+        })
+        .commandDescription(commandDescription("Removes fake players, accepts number or name."))
+        .build());
     manager.command(commandBuilder
-        .commandDescription(commandDescription("Gives you a list of online fake players."))
         .literal("list")
         .handler(ctx -> {
           ctx.sender().sendMessage("There are %s of a max of %s fake players online:".formatted(
@@ -133,16 +135,17 @@ public class RfpCommand {
               config.getInt("max-fake-players")
           ));
           fakeLister.getFakePlayersByName().keySet().forEach(ctx.sender()::sendMessage);
-        }).build());
+        })
+        .commandDescription(commandDescription("Gives you a list of online fake players."))
+        .build());
     manager.command(commandBuilder
-        .commandDescription(commandDescription("Checks for updates."))
         .literal("checkupdates")
         .handler(ctx -> {
           updateChecker.checkUpdates(ctx.sender());
-        }).build());
+        })
+        .commandDescription(commandDescription("Checks for updates."))
+        .build());
     manager.command(commandBuilder
-        .commandDescription(commandDescription("Sets fake players' spawn location to your current"
-            + " location, once set you may further edit it in config."))
         .literal("setspawn")
         .handler(ctx -> {
           if (ctx.sender() instanceof Entity entity) {
@@ -158,6 +161,8 @@ public class RfpCommand {
             }
           }
         })
+        .commandDescription(commandDescription("Sets fake players' spawn location to your current"
+            + " location, once set you may further edit it in config."))
         .build());
   }
 }
