@@ -34,8 +34,6 @@ import me.marlester.rfp.util.PermUtils;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
-import org.incendo.cloud.Command;
-import org.incendo.cloud.description.CommandDescription;
 import org.incendo.cloud.paper.PaperCommandManager;
 
 @RequiredArgsConstructor(onConstructor_ = {@Inject}, access = AccessLevel.PACKAGE)
@@ -52,18 +50,10 @@ public class RfpCommand {
 
   public static final String COMMAND_NAME = "rfp";
 
-  private Command<? extends CommandSender> command;
-
-  /**
-   * Constructs or gets you a command with the {@link #COMMAND_NAME}.
-   */
-  public Command<? extends CommandSender> getCommand() {
-    if (command != null) {
-      return command;
-    }
-    command = manager.commandBuilder(COMMAND_NAME)
-        .permission(new StringBuilder(PermUtils.PERMISSIONS_PREFIX).append("admin").toString())
-        .commandDescription(CommandDescription.commandDescription(""))
+  public void registerCommand() {
+    var commandBuilder = manager.commandBuilder(COMMAND_NAME)
+        .permission(new StringBuilder(PermUtils.PERMISSIONS_PREFIX).append("admin").toString());
+    manager.command(commandBuilder
         .literal("reload")
         .handler(ctx -> {
           try {
@@ -74,7 +64,8 @@ public class RfpCommand {
                 + "the error log is in your console!");
             logger.error("Error while config was reloading!", e);
           }
-        })
+        }).build());
+    manager.command(commandBuilder
         .literal("add")
         .required("string", stringParser())
         .handler(ctx -> {
@@ -100,7 +91,8 @@ public class RfpCommand {
               ctx.sender().sendMessage("Added fake player named " + ctx.get("string") + ".");
             }
           }
-        })
+        }).build());
+    manager.command(commandBuilder
         .literal("remove")
         .required("string", stringParser())
         .handler(ctx -> {
@@ -120,7 +112,8 @@ public class RfpCommand {
               }
             }
           }
-        })
+        }).build());
+    manager.command(commandBuilder
         .literal("list")
         .handler(ctx -> {
           ctx.sender().sendMessage("There are %s of a max of %s fake players online:".formatted(
@@ -128,11 +121,13 @@ public class RfpCommand {
               config.getInt("max-fake-players")
           ));
           fakeLister.getFakePlayersByName().keySet().forEach(ctx.sender()::sendMessage);
-        })
+        }).build());
+    manager.command(commandBuilder
         .literal("checkupdates")
         .handler(ctx -> {
           updateChecker.checkUpdates(ctx.sender());
-        })
+        }).build());
+    manager.command(commandBuilder
         .literal("setspawn")
         .handler(ctx -> {
           if (ctx.sender() instanceof Entity entity) {
@@ -148,7 +143,6 @@ public class RfpCommand {
             }
           }
         })
-        .build();
-    return command;
+        .build());
   }
 }

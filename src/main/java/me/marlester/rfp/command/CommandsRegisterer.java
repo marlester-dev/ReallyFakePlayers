@@ -49,6 +49,6 @@ public class CommandsRegisterer {
     }
 
     // Register commands
-    manager.command(rfpCommand.getCommand());
+    rfpCommand.registerCommand();
   }
 }
