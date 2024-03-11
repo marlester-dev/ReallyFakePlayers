@@ -25,7 +25,6 @@ import dev.dejvokep.boostedyaml.YamlDocument;
 import io.github.miniplaceholders.api.Expansion;
 import me.marlester.rfp.autojoin.AutoJoin;
 import me.marlester.rfp.bytecodeedit.BytecodeEditingRegisterer;
-import me.marlester.rfp.command.CommandsModule;
 import me.marlester.rfp.command.CommandsRegisterer;
 import me.marlester.rfp.config.ConfigsModule;
 import me.marlester.rfp.config.ConfigsRegisterer;
@@ -63,8 +62,7 @@ public final class ReallyFakePlayers extends JavaPlugin {
         new FakePlayersModule(),
         new FakePlayerJoinListenerModule(),
         new PlaceholdersModule(),
-        new MiniMessageModule(),
-        new CommandsModule()
+        new MiniMessageModule()
     );
     // Registering time
     injector.getInstance(ConfigsRegisterer.class).registerConfigs();

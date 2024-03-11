@@ -21,9 +21,8 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.bukkit.command.CommandSender;
-import org.incendo.cloud.bukkit.CloudBukkitCapabilities;
-import org.incendo.cloud.paper.PaperCommandManager;
+import me.marlester.rfp.ReallyFakePlayers;
+import revxrsal.commands.bukkit.BukkitCommandHandler;
 
 /**
  * Class that's used for registering commands of this plugin.
@@ -32,8 +31,7 @@ import org.incendo.cloud.paper.PaperCommandManager;
 @Singleton
 public class CommandsRegisterer {
 
-  // {@link CommandsModule#provideCommandManager(ReallyFakePlayers)}
-  private final PaperCommandManager<CommandSender> manager;
+  private final ReallyFakePlayers pl;
 
   private final RfpCommand rfpCommand;
 
@@ -41,14 +39,7 @@ public class CommandsRegisterer {
    * Registers commands of this plugin.
    */
   public void registerCommands() {
-    // Configure based on capabilities like over there: https://cloud.incendo.org/minecraft/paper/#execution-coordinators
-    if (manager.hasCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
-      manager.registerBrigadier();
-    } else if (manager.hasCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
-      manager.registerAsynchronousCompletions();
-    }
-
-    // Register commands
-    rfpCommand.registerCommand();
+    BukkitCommandHandler handler = BukkitCommandHandler.create(pl);
+    handler.register(rfpCommand);
   }
 }

@@ -31,6 +31,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class ReallyFakePlayersLoader implements PluginLoader {
 
+  // TODO: do something so I don't have to repeat dependencies twice (in gradle and here)
   @Override
   public void classloader(@NotNull PluginClasspathBuilder classpathBuilder) {
     MavenLibraryResolver resolver = new MavenLibraryResolver();
@@ -59,7 +60,9 @@ public class ReallyFakePlayersLoader implements PluginLoader {
     resolver.addDependency(new Dependency(new DefaultArtifact(
         "xyz.jpenilla:reflection-remapper:0.1.0"), null));
     resolver.addDependency(new Dependency(new DefaultArtifact(
-        "org.incendo:cloud-paper:2.0.0-beta.4"), null));
+        "com.github.Revxrsal.Lamp:common:3.1.9"), null));
+    resolver.addDependency(new Dependency(new DefaultArtifact(
+        "com.github.Revxrsal.Lamp:bukkit:3.1.9"), null));
 
     classpathBuilder.addLibrary(resolver);
   }

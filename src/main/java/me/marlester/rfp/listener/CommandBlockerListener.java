@@ -59,7 +59,7 @@ public class CommandBlockerListener implements Listener {
       return;
     }
     String command = e.getMessage().toLowerCase();
-    if (command.startsWith("/" + RfpCommand.COMMAND_NAME)) {
+    if (command.startsWith("/rfp") || command.startsWith("/reallyfakeplayers:rfp")) {
       return;
     }
     for (String fakePlayerName : fakeLister.getRawFakePlayersByName().keySet()) {
