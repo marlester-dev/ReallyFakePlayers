@@ -17,53 +17,57 @@
 
 package me.marlester.rfp;
 
+import com.google.gson.Gson;
 import io.papermc.paper.plugin.loader.PluginClasspathBuilder;
 import io.papermc.paper.plugin.loader.PluginLoader;
 import io.papermc.paper.plugin.loader.library.impl.MavenLibraryResolver;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.graph.Dependency;
 import org.eclipse.aether.repository.RemoteRepository;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * The loader class for this plugin.
- * Its main goal now is to load up libraries of the plugin.
+ * The loader class for ReallyFakePlayers.
+ * Loads up plugin's libraries.
  */
 public class ReallyFakePlayersLoader implements PluginLoader {
 
-  // TODO: do something so I don't have to repeat dependencies twice (in gradle and here)
   @Override
   public void classloader(@NotNull PluginClasspathBuilder classpathBuilder) {
     MavenLibraryResolver resolver = new MavenLibraryResolver();
-
-    // Add repositories
-    resolver.addRepository(new RemoteRepository.Builder("central", "default",
-        "https://repo1.maven.org/maven2").build());
-    resolver.addRepository(new RemoteRepository.Builder("opencollab", "default",
-        "https://repo.opencollab.dev/maven-releases").build());
-    resolver.addRepository(new RemoteRepository.Builder("jitpack", "default",
-        "https://jitpack.io").build());
-
-    // Add dependencies
-    resolver.addDependency(new Dependency(new DefaultArtifact(
-        "com.google.inject:guice:7.0.0"), null));
-    resolver.addDependency(new Dependency(new DefaultArtifact(
-        "com.google.inject.extensions:guice-assistedinject:7.0.0"), null));
-    resolver.addDependency(new Dependency(new DefaultArtifact(
-        "org.javassist:javassist:3.30.2-GA"), null));
-    resolver.addDependency(new Dependency(new DefaultArtifact(
-        "net.bytebuddy:byte-buddy-agent:1.14.12"), null));
-    resolver.addDependency(new Dependency(new DefaultArtifact(
-        "com.github.steveice10:mcprotocollib:1.20.4-1"), null));
-    resolver.addDependency(new Dependency(new DefaultArtifact(
-        "dev.dejvokep:boosted-yaml-spigot:1.4"), null));
-    resolver.addDependency(new Dependency(new DefaultArtifact(
-        "xyz.jpenilla:reflection-remapper:0.1.0"), null));
-    resolver.addDependency(new Dependency(new DefaultArtifact(
-        "com.github.Revxrsal.Lamp:common:3.1.9"), null));
-    resolver.addDependency(new Dependency(new DefaultArtifact(
-        "com.github.Revxrsal.Lamp:bukkit:3.1.9"), null));
-
+    PluginLibraries pluginLibraries = load();
+    pluginLibraries.asDependencies().forEach(resolver::addDependency);
+    pluginLibraries.asRepositories().forEach(resolver::addRepository);
     classpathBuilder.addLibrary(resolver);
+  }
+
+  /**
+   * Loads plugin libraries.
+   */
+  public PluginLibraries load() {
+    try (var in = getClass().getResourceAsStream("/paper-libraries.json")) {
+      return new Gson().fromJson(new InputStreamReader(in, StandardCharsets.UTF_8),
+          PluginLibraries.class);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private record PluginLibraries(Map<String, String> repositories, List<String> dependencies) {
+    public Stream<Dependency> asDependencies() {
+      return dependencies.stream()
+          .map(d -> new Dependency(new DefaultArtifact(d), null));
+    }
+
+    public Stream<RemoteRepository> asRepositories() {
+      return repositories.entrySet().stream()
+          .map(e -> new RemoteRepository.Builder(e.getKey(), "default", e.getValue()).build());
+    }
   }
 }

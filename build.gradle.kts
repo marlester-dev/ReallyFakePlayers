@@ -1,6 +1,10 @@
+import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
+import net.minecrell.pluginyml.paper.PaperPluginDescription
+
 plugins {
     id("java")
     id("io.papermc.paperweight.userdev") version "1.5.11"
+    id("net.minecrell.plugin-yml.paper") version "0.6.0"
 }
 
 version = "3.0.4"
@@ -24,15 +28,40 @@ dependencies {
         exclude(group = "org.bukkit", module = "bukkit")
     }
 
-    compileOnly("com.google.inject:guice:7.0.0")
-    compileOnly("com.google.inject.extensions:guice-assistedinject:7.0.0")
-    compileOnly("org.javassist:javassist:3.30.2-GA")
-    compileOnly("net.bytebuddy:byte-buddy-agent:1.14.12")
-    compileOnly("com.github.steveice10:mcprotocollib:1.20.4-1")
-    compileOnly("dev.dejvokep:boosted-yaml-spigot:1.4")
-    compileOnly("xyz.jpenilla:reflection-remapper:0.1.0")
-    compileOnly("com.github.Revxrsal.Lamp:common:3.1.9")
-    compileOnly("com.github.Revxrsal.Lamp:bukkit:3.1.9")
+    paperLibrary("com.google.inject:guice:7.0.0")
+    paperLibrary("com.google.inject.extensions:guice-assistedinject:7.0.0")
+    paperLibrary("org.javassist:javassist:3.30.2-GA")
+    paperLibrary("net.bytebuddy:byte-buddy-agent:1.14.12")
+    paperLibrary("com.github.steveice10:mcprotocollib:1.20.4-1")
+    paperLibrary("dev.dejvokep:boosted-yaml-spigot:1.4")
+    paperLibrary("xyz.jpenilla:reflection-remapper:0.1.0")
+    paperLibrary("com.github.Revxrsal.Lamp:common:3.1.9")
+    paperLibrary("com.github.Revxrsal.Lamp:bukkit:3.1.9")
+}
+
+paper {
+    loader = "me.marlester.rfp.ReallyFakePlayersLoader"
+    generateLibrariesJson = true
+
+    name = project.name
+    version = project.version.toString()
+    main = "me.marlester.rfp.ReallyFakePlayers"
+    apiVersion = "1.20"
+    authors = listOf("Marlester", "freethemice")
+    description = project.description
+    load = BukkitPluginDescription.PluginLoadOrder.POSTWORLD
+    website = "https://dev.bukkit.org/projects/really-fake-players"
+    serverDependencies {
+        register("MiniPlaceholders") {
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+            required = true
+        }
+
+        register("Vault") {
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+            required = false
+        }
+    }
 }
 
 tasks {
