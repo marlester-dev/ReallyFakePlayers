@@ -128,7 +128,9 @@ class FakePlayerImpl implements FakePlayer {
       joinListener.stopListening();
       joinListener = null;
     }
-    client.disconnect("Removed");
+    if (!Bukkit.getServer().isStopping()) {
+      client.disconnect("Removed");
+    }
     fakeLister.removeFakePlayerFromAllMaps(this);
     removed = true;
   }
