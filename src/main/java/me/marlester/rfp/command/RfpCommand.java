@@ -52,8 +52,6 @@ public class RfpCommand {
   private final FakePlayerManager fakePlayerManager;
   private final UpdateChecker updateChecker;
 
-  public static final String COMMAND_NAME = "rfp";
-
   @Subcommand("checkupdates")
   public void checkUpdates(BukkitCommandActor actor) {
     updateChecker.checkUpdates(actor.getSender());
