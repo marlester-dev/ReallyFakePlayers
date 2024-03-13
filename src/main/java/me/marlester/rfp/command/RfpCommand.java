@@ -34,6 +34,7 @@ import revxrsal.commands.annotation.Description;
 import revxrsal.commands.annotation.Subcommand;
 import revxrsal.commands.bukkit.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
+import revxrsal.commands.util.Either;
 
 /**
  * The main command of the plugin. This class is all about this command.
@@ -93,50 +94,49 @@ public class RfpCommand {
     }
   }
 
-  // TODO: make this cleaner and remove pyramids of doom
   @Subcommand("add")
-  public void add(BukkitCommandActor actor, String args) {
+  public void add(BukkitCommandActor actor, Either<Integer, String> args) {
     var fakePlayersNumber = fakeLister.getRawFakePlayers().size();
     var maxFakePlayers = config.getInt("max-fake-players");
-    Integer numbered = Ints.tryParse(args);
-    if (numbered != null) {
-      if ((numbered + fakePlayersNumber) > maxFakePlayers) {
+    args.ifFirst(number -> {
+      if ((number + fakePlayersNumber) > maxFakePlayers) {
         actor.reply("Unable to add fake players, number of fake players exceeds the maximal number"
             + " of fake players.");
       } else {
-        fakePlayerManager.addNumber(numbered);
-        actor.reply("Added fake players number " + numbered + ".");
+        fakePlayerManager.addNumber(number);
+        actor.reply("Added fake players number " + number + ".");
       }
-    } else {
+    });
+    args.ifSecond(name -> {
       if (fakePlayersNumber >= maxFakePlayers) {
         actor.reply("Unable to add a fake player, number of fake players exceeds the maximal"
-            + " number of fake players.");
-      } else if (fakeLister.getRawFakePlayersByName().containsKey(args)) {
-        actor.reply("Fake player " + args + " already exists!");
+            + " number of fake players (" + maxFakePlayers + ").");
+      } else if (fakeLister.getRawFakePlayersByName().containsKey(name)) {
+        actor.reply("Fake player " + name + " already exists!");
       } else {
-        fakePlayerManager.add(args);
-        actor.reply("Added fake player named " + args + ".");
+        fakePlayerManager.add(name);
+        actor.reply("Added fake player named " + name + ".");
       }
-    }
+    });
   }
 
   @Subcommand("remove")
-  public void remove(BukkitCommandActor actor, String args) {
-    if (args.equalsIgnoreCase("all")) {
-      fakePlayerManager.removeAll();
-    } else {
-      Integer numbered = Ints.tryParse(args);
-      if (numbered != null) {
-        fakePlayerManager.removeNumber(numbered);
-        actor.reply("Attempted to remove " + numbered + " fake players.");
-      } else {
-        if (fakeLister.getRawFakePlayersByName().containsKey(args)) {
-          fakePlayerManager.remove(args);
-          actor.reply(args + " fake player was removed.");
-        } else {
-          actor.reply(args + " no fake player with that name.");
-        }
+  public void remove(BukkitCommandActor actor, Either<Integer, String> args) {
+    args.ifFirst(number -> {
+      fakePlayerManager.removeNumber(number);
+      actor.reply("Attempted to remove " + number + " fake players.");
+    });
+    args.ifSecond(name -> {
+      if ("all".equals(name)) {
+        fakePlayerManager.removeAll();
+        return;
       }
-    }
+      if (fakeLister.getRawFakePlayersByName().containsKey(name)) {
+        fakePlayerManager.remove(name);
+        actor.reply(name + " fake player was removed.");
+      } else {
+        actor.reply(name + " no fake player with that name.");
+      }
+    });
   }
 }
