@@ -139,6 +139,8 @@ chatting:
     - "G'day everybody, I am <internal_player_name>"
     - "Anyone wanna talk?"
     - "<server_name> is the best server!"
+  first-messages: # TODO: implement this
+    - "Howdy everybody, my name is <internal_player_name>"
 # Vault integration - permissions and groups for fake players
 vault-integration:
   enable: true
