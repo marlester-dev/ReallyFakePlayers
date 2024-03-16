@@ -21,6 +21,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.agent.ByteBuddyAgent;
 
 /**
  * Responsible for registering bytecode modifications.
@@ -36,6 +37,7 @@ public class BytecodeEditingRegisterer {
    * Initiates all bytecode modifications.
    */
   public void registerBytecodeEditions() {
+    ByteBuddyAgent.install();
     secretClasser.createSecretClass();
     loginListenerEditor.startEditing();
   }

@@ -21,6 +21,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import java.lang.instrument.ClassDefinition;
+import java.lang.instrument.Instrumentation;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
@@ -31,6 +32,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import me.marlester.rfp.util.RemapUtil;
+import net.bytebuddy.agent.ByteBuddyAgent;
 import net.minecraft.network.protocol.login.ServerboundHelloPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerLoginPacketListenerImpl;
@@ -114,6 +116,6 @@ public class LoginListenerEditor {
     });
 
     ClassDefinition classDefinition = new ClassDefinition(clazz, ctClass.toBytecode());
-    Agenter.INSTRUMENTATION.redefineClasses(classDefinition);
+    ByteBuddyAgent.getInstrumentation().redefineClasses(classDefinition);
   }
 }
