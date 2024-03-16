@@ -24,6 +24,7 @@ import dev.dejvokep.boostedyaml.YamlDocument;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import me.marlester.rfp.ReallyFakePlayers;
@@ -57,6 +58,7 @@ public class Chatting {
     if (chatters.size() >= config.getInt("chatting.max-chatters")) {
       return;
     }
+    AtomicBoolean firstRun = new AtomicBoolean(true);
     int firstDelay = 20 * ThreadLocalRandom.current().nextInt(
         config.getInt("chatting.first-delay.min"),
         config.getInt("chatting.first-delay.max") + 1
@@ -68,7 +70,7 @@ public class Chatting {
         if (fakePlayer.isRemoved()) {
           return;
         }
-        chatRandomMessage(fakePlayer);
+        chatRandomMessage(fakePlayer, firstRun.get());
         chatters.add(fakePlayer);
         scheduler.runTaskLater(pl, () -> {
           chatters.remove(fakePlayer);
@@ -77,14 +79,17 @@ public class Chatting {
             config.getInt("chatting.delay.min"),
             config.getInt("chatting.delay.max") + 1
         );
+
+        firstRun.compareAndSet(true, false);
         // Schedule the next execution(s)
         scheduler.runTaskLater(pl, this, delay);
       }
     }, firstDelay);
   }
 
-  private void chatRandomMessage(FakePlayer fakePlayer) {
-    var messages = config.getStringList("chatting.messages");
+  private void chatRandomMessage(FakePlayer fakePlayer, boolean firstMessage) {
+    var messages = firstMessage ? config.getStringList("chatting.first-messages")
+        : config.getStringList("chatting.messages");
     var message = messages.get(ThreadLocalRandom.current().nextInt(messages.size()));
     var player = fakePlayer.getPlayer();
     message = miniMsgAsst.deserializeAsPlainText(message, player);
