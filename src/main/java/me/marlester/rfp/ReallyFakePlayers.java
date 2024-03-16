@@ -24,13 +24,13 @@ import com.google.inject.name.Names;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import io.github.miniplaceholders.api.Expansion;
 import me.marlester.rfp.autojoin.AutoJoin;
-import me.marlester.rfp.bytecodeedit.BytecodeEditingRegisterer;
-import me.marlester.rfp.command.CommandsRegisterer;
+import me.marlester.rfp.bytecodeedit.BytecodeEditingRegistrar;
+import me.marlester.rfp.command.CommandsRegistrar;
 import me.marlester.rfp.config.ConfigsModule;
-import me.marlester.rfp.config.ConfigsRegisterer;
+import me.marlester.rfp.config.ConfigsRegistrar;
 import me.marlester.rfp.fakeplayers.FakePlayerManager;
 import me.marlester.rfp.fakeplayers.FakePlayersModule;
-import me.marlester.rfp.listener.ListenersRegisterer;
+import me.marlester.rfp.listener.ListenersRegistrar;
 import me.marlester.rfp.listener.fakeplayerjoinlistener.FakePlayerJoinListenerModule;
 import me.marlester.rfp.minimessage.MiniMessageModule;
 import me.marlester.rfp.placeholders.PlaceholdersModule;
@@ -65,11 +65,11 @@ public final class ReallyFakePlayers extends JavaPlugin {
         new MiniMessageModule()
     );
     // Registering time
-    injector.getInstance(ConfigsRegisterer.class).registerConfigs();
-    injector.getInstance(BytecodeEditingRegisterer.class).registerBytecodeEditions();
+    injector.getInstance(ConfigsRegistrar.class).registerConfigs();
+    injector.getInstance(BytecodeEditingRegistrar.class).registerBytecodeEditions();
     injector.getInstance(VaultIntegration.class).setupPermissions();
-    injector.getInstance(ListenersRegisterer.class).registerListeners();
-    injector.getInstance(CommandsRegisterer.class).registerCommands();
+    injector.getInstance(ListenersRegistrar.class).registerListeners();
+    injector.getInstance(CommandsRegistrar.class).registerCommands();
     injector.getInstance(Key.get(Expansion.class, Names.named("placeholdersExpansion")))
         .register();
 

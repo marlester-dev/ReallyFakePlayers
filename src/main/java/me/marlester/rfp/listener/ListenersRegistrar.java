@@ -32,7 +32,7 @@ import org.bukkit.Bukkit;
  */
 @RequiredArgsConstructor(onConstructor_ = {@Inject}, access = AccessLevel.PACKAGE)
 @Singleton
-public class ListenersRegisterer {
+public class ListenersRegistrar {
 
   private final ReallyFakePlayers pl;
 

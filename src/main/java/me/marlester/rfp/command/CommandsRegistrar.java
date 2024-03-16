@@ -29,7 +29,7 @@ import revxrsal.commands.bukkit.BukkitCommandHandler;
  */
 @RequiredArgsConstructor(onConstructor_ = {@Inject}, access = AccessLevel.PACKAGE)
 @Singleton
-public class CommandsRegisterer {
+public class CommandsRegistrar {
 
   private final ReallyFakePlayers pl;
 

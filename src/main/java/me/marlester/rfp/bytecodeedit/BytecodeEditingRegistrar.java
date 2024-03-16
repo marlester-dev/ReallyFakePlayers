@@ -28,7 +28,7 @@ import net.bytebuddy.agent.ByteBuddyAgent;
  */
 @RequiredArgsConstructor(onConstructor_ = {@Inject}, access = AccessLevel.PACKAGE)
 @Singleton
-public class BytecodeEditingRegisterer {
+public class BytecodeEditingRegistrar {
 
   private final SecretClasser secretClasser;
   private final LoginListenerEditor loginListenerEditor;

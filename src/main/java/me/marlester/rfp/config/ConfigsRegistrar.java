@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor(onConstructor_ = {@Inject}, access = AccessLevel.PACKAGE)
 @Singleton
-public class ConfigsRegisterer {
+public class ConfigsRegistrar {
 
   private final ConfigYml configYml;
   private final NameListYml nameListYml;
