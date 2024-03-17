@@ -18,16 +18,30 @@
 package me.marlester.rfp.fakeplayers;
 
 import com.github.steveice10.mc.protocol.MinecraftProtocol;
+import com.github.steveice10.mc.protocol.data.game.ResourcePackStatus;
+import com.github.steveice10.mc.protocol.data.game.entity.player.HandPreference;
+import com.github.steveice10.mc.protocol.data.game.setting.ChatVisibility;
+import com.github.steveice10.mc.protocol.data.game.setting.SkinPart;
+import com.github.steveice10.mc.protocol.packet.common.clientbound.ClientboundResourcePackPushPacket;
+import com.github.steveice10.mc.protocol.packet.common.serverbound.ServerboundClientInformationPacket;
+import com.github.steveice10.mc.protocol.packet.common.serverbound.ServerboundResourcePackPacket;
 import com.github.steveice10.mc.protocol.packet.login.serverbound.ServerboundHelloPacket;
+import com.github.steveice10.mc.protocol.packet.login.serverbound.ServerboundLoginAcknowledgedPacket;
 import com.github.steveice10.packetlib.Session;
 import com.github.steveice10.packetlib.event.session.DisconnectedEvent;
 import com.github.steveice10.packetlib.event.session.PacketSendingEvent;
 import com.github.steveice10.packetlib.event.session.SessionAdapter;
+import com.github.steveice10.packetlib.packet.Packet;
 import com.github.steveice10.packetlib.tcp.TcpClientSession;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 import com.google.inject.name.Named;
 import dev.dejvokep.boostedyaml.YamlDocument;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -94,6 +108,34 @@ class FakePlayerImpl implements FakePlayer {
         var packet = event.getPacket();
         if (packet instanceof ServerboundHelloPacket helloPacket) {
           event.setPacket(helloPacket.withProfileId(key));
+        }
+      }
+
+      // TODO move all of this outta here
+      @Override
+      public void packetReceived(Session session, Packet packet) {
+        if (packet instanceof ClientboundResourcePackPushPacket rpPacket) {
+          if (!isValidResourcePackUrl(rpPacket.getUrl())) {
+            session.send(new ServerboundResourcePackPacket(rpPacket.getId(),
+                ResourcePackStatus.INVALID_URL));
+            return;
+          }
+
+          session.send(new ServerboundResourcePackPacket(rpPacket.getId(),
+              ResourcePackStatus.ACCEPTED));
+          session.send(new ServerboundResourcePackPacket(rpPacket.getId(),
+              ResourcePackStatus.DOWNLOADED));
+          session.send(new ServerboundResourcePackPacket(rpPacket.getId(),
+              ResourcePackStatus.SUCCESSFULLY_LOADED));
+        }
+      }
+
+      private boolean isValidResourcePackUrl(String url) {
+        try {
+          var protocol = URI.create(url).toURL().getProtocol();
+          return "http".equals(protocol) || "https".equals(protocol);
+        } catch (MalformedURLException var3) {
+          return false;
         }
       }
 
