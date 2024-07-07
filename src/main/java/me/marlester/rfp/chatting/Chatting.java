@@ -88,11 +88,22 @@ public class Chatting {
   }
 
   private void chatRandomMessage(FakePlayer fakePlayer, boolean firstMessage) {
-    var messages = firstMessage ? config.getStringList("chatting.first-messages")
-        : config.getStringList("chatting.messages");
-    var message = messages.get(ThreadLocalRandom.current().nextInt(messages.size()));
-    var player = fakePlayer.getPlayer();
-    message = miniMsgAsst.deserializeAsPlainText(message, player);
-    player.chat(message);
+    List<String> messages = null;
+
+    if (firstMessage) {
+      Optional<List<String>> optionalMessages = config.getOptionalStringList("chatting.first-messages");
+      if (optionalMessages.isPresent()) {
+        messages = optionalMessages.get();
+      }
+    } else {
+      messages = config.getStringList("chatting.messages");
+    }
+
+    if (messages != null && !messages.isEmpty()) {
+      String message = messages.get(ThreadLocalRandom.current().nextInt(messages.size()));
+      var player = fakePlayer.getPlayer();
+      message = miniMsgAsst.deserializeAsPlainText(message, player);
+      player.chat(message);
+    }
   }
 }
