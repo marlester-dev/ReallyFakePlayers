@@ -139,8 +139,11 @@ chatting:
     - "G'day everybody, I am <internal_player_name>"
     - "Anyone wanna talk?"
     - "<server_name> is the best server!"
+  # Value should be a string list
+  # You can now customize the first messages of fake players
+  # First messages are the ones that they send after the first-delay is over
+  # If this is unset, it falls back to the normal messages
   first-messages:
-    - "Howdy everybody, my name is <internal_player_name>"
 # Vault integration - permissions and groups for fake players
 vault-integration:
   enable: true
