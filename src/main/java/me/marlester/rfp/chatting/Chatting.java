@@ -91,7 +91,7 @@ public class Chatting {
     List<String> messages = null;
 
     if (firstMessage) {
-      Optional<List<String>> optionalMessages = config.getOptionalStringList("chatting.first-messages");
+      var optionalMessages = config.getOptionalStringList("chatting.first-messages");
       if (optionalMessages.isPresent()) {
         messages = optionalMessages.get();
       }
