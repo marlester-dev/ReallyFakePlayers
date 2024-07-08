@@ -18,8 +18,12 @@ public class ResourcePackUtils {
    */
   public boolean isValidResourcePackUrl(String url) {
     try {
-      var protocol = URI.create(url).toURL().getProtocol();
-      return "http".equals(protocol) || "https".equals(protocol);
+      if (url.isEmpty()) {
+        return false;
+      } else {
+        var protocol = URI.create(url).toURL().getProtocol();
+        return "http".equals(protocol) || "https".equals(protocol);
+      }
     } catch (MalformedURLException var3) {
       return false;
     }
