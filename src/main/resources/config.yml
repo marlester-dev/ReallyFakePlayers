@@ -1,0 +1,178 @@
+# MiniMessage & MiniPlaceholders supported
+# The standard time unit here is a second
+#
+# Placeholders:
+# <rfp_fakeplayer_count>: Number of fake players
+# <rfp_player_count_no_fakeplayers>: Server's player count without fake
+# players included
+# Internal placeholders (only accessible in this plugin):
+# <internal_player_name>: Player's name
+# <internal_rel_1_player_name>: Name of the 1st player involved in the action
+# <internal_rel_2_player_name>: Name of the 2nd player involved in the action
+# Built-in MiniPlaceholders placeholders (Server Expansion):
+# https://github.com/MiniPlaceholders/MiniPlaceholders/wiki/Placeholders#server-expansion
+#
+# Warning ⚠:
+# Basic YAML knowledge and common sense recommended
+# Misconfigurations may lead to crashes or bugs
+
+# Auto config update system
+# DON'T change this unless you know what you do
+config-version: 4
+# Sets the maximum number of fake players that can be created
+max-fake-players: 60
+# Configuration to block players from executing commands
+# containing fake players' names
+# This won't stop players who have the 'rfp.interaction' permission
+block-interaction:
+  enable: true
+  # Message shown upon command block
+  message: "<red>Hey, <internal_player_name>!<br>\
+    This player is on <yellow>DND</yellow> (Do Not Disturb)!"
+# Fake players will be invulnerable, and can only be damaged by players
+# in creative mode.
+invulnerable: true
+# Fake players won't collide with other entities.
+no-collision: true
+# Fake players won't be affected by gravity.
+no-gravity: true
+# Fake players will get an infinite invisibility effect.
+invisibility-effect: true
+# Value should be a Location object
+# If null, the plugin won't change the spawn location of fake players
+# Sets the spawn location of fake players
+# You can change this in-game with /rfp setspawn
+spawn-location: null
+# Experimental, may not work perfectly
+# Attempts to hide fake players from all other players
+hide: false
+# Commands executed when a fake player joins
+join-commands:
+  # Commands that will be dispatched by the console
+  # You are able to make this null to disable this
+  as-console:
+    - "say Greetings to <internal_player_name>!"
+  # Commands that will be performed by the fake player
+  # You are able to make this null to disable this
+  as-fake-player:
+    - "examplecommand"
+# Commands executed when a fake player quits
+quit-commands:
+  # Commands that will be dispatched by the console
+  # You are able to make this null to disable this
+  as-console:
+    - "say Goodbye, <internal_player_name>!"
+  # Commands that will be performed by the fake player
+  # You are able to make this null to disable this
+  as-fake-player:
+    - "examplecommand"
+# Value should be a string
+# If null, the default value is assumed to be 'localhost'
+# Custom join IP for fake players
+join-ip: null
+# Value should be an integer
+# If null, the default value is assumed to be the server's port
+# Custom join port for fake players
+join-port: null
+# It will automatically add a fake player to the server
+# with a delay that you set beneath
+auto-join:
+  enable: true
+  # Delay on the startup
+  startup-delay: 3
+  delay:
+    min: 60
+    max: 120
+# Each fake player will leave the server after a delay that you set below
+auto-quit:
+  enable: true
+  delay:
+    min: 360
+    max: 1800
+# A random fake player will be taken to welcome a joining player
+# with a delay that you set beneath
+welcome:
+  enable: true
+  # Chance of being welcomed by fake players
+  chance: 50
+  # How often can a player be welcomed by fake players?
+  frequency: 30
+  # How many fake players can welcome at a period of time below?
+  max-welcomers: 10
+  period: 3
+  delay:
+    min: 1
+    max: 3
+  # Messages they send when a player joins for the first time
+  first-join-messages:
+    - "Welcome!"
+    - "Welcome <internal_rel_2_player_name>!"
+    - "What's up <internal_rel_2_player_name>!"
+    - "<internal_rel_2_player_name>!"
+    - "Finally, the one and only <internal_rel_2_player_name>!"
+  # Messages they send when a player rejoins
+  rejoin-messages:
+    - "WB"
+    - "Welcome back <internal_rel_2_player_name>!"
+    - "Hey, <internal_rel_2_player_name>!"
+    - "Whats up <internal_rel_2_player_name>!"
+    - "<internal_rel_2_player_name>!"
+    - "Hello <internal_rel_2_player_name>!"
+    - "WB <internal_rel_2_player_name>!"
+# Fake players will automatically chat with a delay you set beneath
+chatting:
+  enable: true
+  # How many fake players can chat at a period of time below (in seconds)
+  max-chatters: 10
+  period: 3
+  # Delay for the first message of the fake player
+  first-delay:
+    min: 10
+    max: 80
+  delay:
+    min: 80
+    max: 180
+  # Random messages fake players will send throughout the time
+  messages:
+    - "Hello there"
+    - "G'day everybody, I am <internal_player_name>"
+    - "Anyone wanna talk?"
+    - "<server_name> is the best server!"
+  # Value should be a string list
+  # You can now customize the first messages of fake players
+  # First messages are the ones that they send after the first-delay is over
+  # If this is null, it falls back to the normal messages
+  first-messages: null
+# Vault integration - permissions and groups for fake players
+vault-integration:
+  enable: true
+  # Groups fake players will be granted
+  # A random group will be chosen
+  # You are able to make this null to disable this
+  groups:
+    - "default"
+    - "vip"
+    - "premium"
+  # Permissions fake players will be granted
+  # You are able to make this null to disable this
+  permissions:
+    - "example.permission"
+# Update check configuration
+update-check:
+  # Check updates on the startup?
+  on-startup: true
+  # Shall we notify staff when they join?
+  notify-staff: true
+  # Value should be a string
+  # If null, the default api key will be taken
+  # Curseforge's API key
+  # It's recommended to change the api key to yours
+  curse-api-key: null
+  # Value should be a string
+  # If null, the default api url will be taken
+  # Curseforge's API url
+  curse-api-url: null
+  # Value should be an integer
+  # If null, the default project id will be taken
+  # Curseforge's project id
+  curse-project-id: null
