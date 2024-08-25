@@ -6,5 +6,3 @@
 
 [BukkitDev page of the plugin](https://dev.bukkit.org/projects/really-fake-players).  
 Licensed under the EUPL-1.2.
-
-Source code of the MC 1.20.6 version of the plugin: https://github.com/marlester-dev/RFP-1.20.6
