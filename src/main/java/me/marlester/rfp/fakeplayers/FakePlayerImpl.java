@@ -68,9 +68,6 @@ class FakePlayerImpl implements FakePlayer {
   @Setter
   private FakePlayerJoinListener joinListener;
 
-  // TODO: add update mcbotlib to 1.1.0
-  // TODO: add Configurable render distance
-
   public void join() {
     if (removed) {
       return;
