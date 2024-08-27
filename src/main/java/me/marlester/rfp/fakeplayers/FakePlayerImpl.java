@@ -25,7 +25,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import me.marlester.mcbotlib.Bot;
+import me.marlester.mcbotlib.BotSession;
 import me.marlester.mcbotlib.BotSettings;
 import me.marlester.rfp.ReallyFakePlayers;
 import me.marlester.rfp.config.RfpYamlDoc;
@@ -58,7 +58,7 @@ class FakePlayerImpl implements FakePlayer {
   @Getter
   private UUID key;
   @Getter
-  private Session client;
+  private BotSession client;
   @Getter
   @Setter
   private Player player;
@@ -67,9 +67,6 @@ class FakePlayerImpl implements FakePlayer {
 
   @Setter
   private FakePlayerJoinListener joinListener;
-
-  // TODO: add update mcbotlib to 1.1.0
-  // TODO: add Configurable render distance
 
   public void join() {
     if (removed) {
@@ -88,8 +85,9 @@ class FakePlayerImpl implements FakePlayer {
     fakePlayerUuidsByKey.put(key, uuid);
     String host = config.getOptionalString("join-ip").orElse("localhost");
     int port = config.getOptionalInt("join-port").orElse(Bukkit.getPort());
-    Bot bot = new Bot(name, host, port, BotSettings.builder().build());
-    client = bot.getClient();
+    client = new BotSession(name, host, port, BotSettings.builder()
+        .renderDistance(config.getInt("render-distance"))
+        .build());
     client.addListener(new SessionAdapter() {
       @Override
       public void packetSending(PacketSendingEvent event) {
@@ -99,7 +97,7 @@ class FakePlayerImpl implements FakePlayer {
         }
       }
     });
-    bot.connect();
+    client.connect();
     joinListener = joinListenerFactory.create(this);
     joinListener.startListening();
     Bukkit.getScheduler().runTaskLater(pl, () -> {

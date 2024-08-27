@@ -18,7 +18,7 @@
 
 # Auto config update system
 # DON'T change this unless you know what you do
-config-version: 4
+config-version: 5
 # Sets the maximum number of fake players that can be created
 max-fake-players: 60
 # Configuration to block players from executing commands
@@ -38,6 +38,8 @@ no-collision: true
 no-gravity: true
 # Fake players will get an infinite invisibility effect.
 invisibility-effect: true
+# Fake players' render distance
+render-distance: 1
 # Value should be a Location object
 # If null, the plugin won't change the spawn location of fake players
 # Sets the spawn location of fake players
