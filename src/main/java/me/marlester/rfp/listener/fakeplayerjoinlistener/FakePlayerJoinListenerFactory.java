@@ -15,7 +15,7 @@
  * and limitations under the License.
  */
 
-package me.marlester.rfp.listener.fakeplayerloginlisteners;
+package me.marlester.rfp.listener.fakeplayerjoinlistener;
 
 import me.marlester.rfp.fakeplayers.FakePlayer;
 
