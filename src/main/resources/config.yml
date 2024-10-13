@@ -18,7 +18,7 @@
 
 # Auto config update system
 # DON'T change this unless you know what you do
-config-version: 5
+config-version: 6
 # Sets the maximum number of fake players that can be created
 max-fake-players: 60
 # Configuration to block players from executing commands
@@ -54,6 +54,16 @@ join-commands:
   # You are able to make this null to disable this
   as-console:
     - "say Greetings to <internal_player_name>!"
+  # Commands that will be performed by the fake player
+  # You are able to make this null to disable this
+  as-fake-player:
+    - "examplecommand"
+# Commands executed when a fake player respawns
+respawn-commands:
+  # Commands that will be dispatched by the console
+  # You are able to make this null to disable this
+  as-console:
+    - "examplecommand"
   # Commands that will be performed by the fake player
   # You are able to make this null to disable this
   as-fake-player:

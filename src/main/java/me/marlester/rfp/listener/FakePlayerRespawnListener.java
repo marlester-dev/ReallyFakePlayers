@@ -23,6 +23,6 @@ public class FakePlayerRespawnListener implements Listener {
     if (fakePlayer == null) {
       return;
     }
-    joinListener.onSpawn(player);
+    joinListener.onSpawn(player, true);
   }
 }

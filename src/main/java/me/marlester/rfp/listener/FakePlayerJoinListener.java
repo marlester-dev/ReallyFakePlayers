@@ -19,8 +19,6 @@ package me.marlester.rfp.listener;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.google.inject.assistedinject.Assisted;
-import com.google.inject.assistedinject.AssistedInject;
 import com.google.inject.name.Named;
 import java.util.concurrent.ThreadLocalRandom;
 import lombok.AccessLevel;
@@ -30,7 +28,6 @@ import me.marlester.rfp.chatting.Chatting;
 import me.marlester.rfp.config.RfpYamlDoc;
 import me.marlester.rfp.fakeplayers.FakePlayer;
 import me.marlester.rfp.faketools.FakeLister;
-import me.marlester.rfp.vault.VaultIntegration;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -104,16 +101,16 @@ public class FakePlayerJoinListener implements Listener {
   }
 
   public void onSpawn(Player fakePlayer) {
+    onSpawn(fakePlayer, false);
+  }
+
+  public void onSpawn(Player fakePlayer, boolean respawn) {
     if (config.getBoolean("invisibility-effect")) {
-      fakePlayer.addPotionEffect(
-          new PotionEffect(
-              PotionEffectType.INVISIBILITY,
-              PotionEffect.INFINITE_DURATION,
-              1,
-              false,
-              false
-          )
-      );
+      if (respawn) {
+        Bukkit.getScheduler().scheduleSyncDelayedTask(pl, () -> addInvis(fakePlayer), 1L);
+      } else {
+        addInvis(fakePlayer);
+      }
     }
     if (config.getBoolean("invulnerable")) {
       fakePlayer.setInvulnerable(true);
@@ -124,5 +121,26 @@ public class FakePlayerJoinListener implements Listener {
     if (config.getBoolean("no-gravity")) {
       fakePlayer.setGravity(false);
     }
+    if (respawn) {
+      var consoleSender = Bukkit.getConsoleSender();
+      config.getSerializedStringList("respawn-commands.as-console", fakePlayer).forEach(c -> {
+        Bukkit.dispatchCommand(consoleSender, c);
+      });
+      config.getSerializedStringList("respawn-commands.as-fake-player", fakePlayer).forEach(c -> {
+        fakePlayer.performCommand(c);
+      });
+    }
+  }
+
+  private static void addInvis(Player player) {
+    player.addPotionEffect(
+        new PotionEffect(
+            PotionEffectType.INVISIBILITY,
+            PotionEffect.INFINITE_DURATION,
+            1,
+            false,
+            false
+        )
+    );
   }
 }
