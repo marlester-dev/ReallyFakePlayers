@@ -62,8 +62,7 @@ join-commands:
 respawn-commands:
   # Commands that will be dispatched by the console
   # You are able to make this null to disable this
-  as-console:
-    - "effect give <internal_player_name> minecraft:strength 5000"
+  as-console: null
   # Commands that will be performed by the fake player
   # You are able to make this null to disable this
   as-fake-player: null
