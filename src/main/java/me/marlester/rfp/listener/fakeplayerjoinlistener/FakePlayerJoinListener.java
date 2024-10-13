@@ -32,6 +32,7 @@ import me.marlester.rfp.vault.VaultIntegration;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.potion.PotionEffect;
@@ -63,7 +64,7 @@ public class FakePlayerJoinListener implements Listener {
    *
    * @param e the player join event.
    */
-  @EventHandler
+  @EventHandler(priority = EventPriority.LOW)
   public void onJoin(PlayerJoinEvent e) {
     var player = e.getPlayer();
     if (player.getUniqueId().equals(fakePlayer.getUuid())) {
