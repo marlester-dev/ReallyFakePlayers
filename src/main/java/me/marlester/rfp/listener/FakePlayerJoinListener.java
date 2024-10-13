@@ -54,7 +54,6 @@ public class FakePlayerJoinListener implements Listener {
   private final Chatting chatting;
   @Named("config")
   private final RfpYamlDoc config;
-  private final VaultIntegration vaultIntegration;
 
   /**
    * Manages actions upon a fake player's join event. Sets up the fake player upon joining by
