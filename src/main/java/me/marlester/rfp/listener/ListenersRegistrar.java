@@ -36,6 +36,7 @@ public class ListenersRegistrar {
 
   private final ReallyFakePlayers pl;
 
+  private final FakePlayerJoinListener fakePlayerJoinListener;
   private final FakePlayerGuardingListener fakePlayerGuardingListener;
   private final CommandBlockerListener commandBlockerListener;
   private final FakePlayerQuitListener fakePlayerQuitListener;
@@ -50,6 +51,7 @@ public class ListenersRegistrar {
    */
   public void registerListeners() {
     var pluginManager = Bukkit.getPluginManager();
+    pluginManager.registerEvents(fakePlayerJoinListener, pl);
     pluginManager.registerEvents(fakePlayerGuardingListener, pl);
     pluginManager.registerEvents(commandBlockerListener, pl);
     pluginManager.registerEvents(spawnLocationListener, pl);
