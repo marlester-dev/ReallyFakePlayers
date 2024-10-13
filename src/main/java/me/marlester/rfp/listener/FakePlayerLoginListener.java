@@ -2,10 +2,8 @@ package me.marlester.rfp.listener;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.google.inject.name.Named;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import me.marlester.rfp.config.RfpYamlDoc;
 import me.marlester.rfp.faketools.FakeLister;
 import me.marlester.rfp.vault.VaultIntegration;
 import org.bukkit.event.EventHandler;
