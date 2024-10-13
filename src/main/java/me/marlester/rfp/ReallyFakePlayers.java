@@ -33,7 +33,6 @@ import me.marlester.rfp.config.RfpYamlDocFactory;
 import me.marlester.rfp.fakeplayers.FakePlayerManager;
 import me.marlester.rfp.fakeplayers.FakePlayersModule;
 import me.marlester.rfp.listener.ListenersRegistrar;
-import me.marlester.rfp.listener.fakeplayerjoinlistener.FakePlayerJoinListenerModule;
 import me.marlester.rfp.placeholders.PlaceholdersModule;
 import me.marlester.rfp.update.UpdateChecker;
 import me.marlester.rfp.vault.VaultIntegration;
@@ -59,7 +58,6 @@ public class ReallyFakePlayers extends JavaPlugin {
         new MainModule(this),
         new ConfigModule(),
         new FakePlayersModule(),
-        new FakePlayerJoinListenerModule(),
         new PlaceholdersModule()
     );
 

@@ -18,7 +18,6 @@
 package me.marlester.rfp.fakeplayers;
 
 import java.util.UUID;
-import me.marlester.rfp.listener.fakeplayerjoinlistener.FakePlayerJoinListener;
 import org.bukkit.entity.Player;
 import org.geysermc.mcprotocollib.network.Session;
 
@@ -81,13 +80,6 @@ public interface FakePlayer {
   boolean isRemoved();
 
   /**
-   * Sets the {@link FakePlayerJoinListener} of this fake player.
-   *
-   * @param value FakePlayerJoinListener instance.
-   */
-  void setJoinListener(FakePlayerJoinListener value);
-
-  /**
    * Tries to connect this fake player to the server.
    */
   void join();
@@ -97,10 +89,4 @@ public interface FakePlayer {
    * player lists, etc. Will not try to remove if already removed.
    */
   void remove();
-
-  /**
-   * @return state of the fake player. RAW means not connected, PRELOGIN means in prelogin event.
-   */
-  FakePlayerState getState();
-  void setState(FakePlayerState value);
 }

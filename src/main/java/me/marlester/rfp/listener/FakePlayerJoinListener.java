@@ -15,8 +15,10 @@
  * and limitations under the License.
  */
 
-package me.marlester.rfp.listener.fakeplayerjoinlistener;
+package me.marlester.rfp.listener;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 import com.google.inject.name.Named;
@@ -41,10 +43,10 @@ import org.bukkit.potion.PotionEffectType;
 /**
  * Handles the joining process of fake players into the game. This class is responsible for setting
  * up fake players when they join the game, including hiding them from real players, applying
- * various effects and configurations, and handling their interactions with the game world. It also
- * ensures that once a fake player has joined, the listener is unregistered.
+ * various effects and configurations, and handling their interactions with the game world.
  */
-@RequiredArgsConstructor(onConstructor_ = {@AssistedInject}, access = AccessLevel.PACKAGE)
+@RequiredArgsConstructor(onConstructor_ = {@Inject}, access = AccessLevel.PACKAGE)
+@Singleton
 public class FakePlayerJoinListener implements Listener {
 
   private final ReallyFakePlayers pl;
@@ -53,9 +55,6 @@ public class FakePlayerJoinListener implements Listener {
   @Named("config")
   private final RfpYamlDoc config;
   private final VaultIntegration vaultIntegration;
-
-  @Assisted
-  private final FakePlayer fakePlayer;
 
   /**
    * Manages actions upon a fake player's join event. Sets up the fake player upon joining by
@@ -67,16 +66,16 @@ public class FakePlayerJoinListener implements Listener {
   @EventHandler(priority = EventPriority.LOW)
   public void onJoin(PlayerJoinEvent e) {
     var player = e.getPlayer();
-    if (player.getUniqueId().equals(fakePlayer.getUuid())) {
-      fakePlayer.setPlayer(player);
-      handleJoin();
-      // now let's make this listener disappear
-      stopListening();
-      fakePlayer.setJoinListener(null);
+    var uuid = player.getUniqueId();
+    var fakePlayer = fakeLister.getRawFakePlayersByUuid().get(uuid);
+    if (fakePlayer == null) {
+      return;
     }
+    fakePlayer.setPlayer(player);
+    handleJoin(fakePlayer);
   }
 
-  private void handleJoin() {
+  private void handleJoin(FakePlayer fakePlayer) {
     fakeLister.getFakePlayers().add(fakePlayer);
     fakeLister.getFakePlayersByUuid().put(fakePlayer.getUuid(), fakePlayer);
     fakeLister.getFakePlayersByName().put(fakePlayer.getName(), fakePlayer);
@@ -126,20 +125,5 @@ public class FakePlayerJoinListener implements Listener {
       );
       Bukkit.getScheduler().runTaskLater(pl, fakePlayer::remove, delay);
     }
-  }
-
-  /**
-   * Registers the listener to start receiving join events.
-   */
-  public void startListening() {
-    Bukkit.getPluginManager().registerEvents(this, pl);
-  }
-
-  /**
-   * Unregisters the listener to stop receiving join events. Typically called after the fake player
-   * has joined and is fully set up.
-   */
-  public void stopListening() {
-    PlayerJoinEvent.getHandlerList().unregister(this);
   }
 }

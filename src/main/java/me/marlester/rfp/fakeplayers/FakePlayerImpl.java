@@ -30,12 +30,9 @@ import me.marlester.mcbotlib.BotSettings;
 import me.marlester.rfp.ReallyFakePlayers;
 import me.marlester.rfp.config.RfpYamlDoc;
 import me.marlester.rfp.faketools.FakeLister;
-import me.marlester.rfp.listener.fakeplayerjoinlistener.FakePlayerJoinListener;
-import me.marlester.rfp.listener.fakeplayerjoinlistener.FakePlayerJoinListenerFactory;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.geysermc.mcprotocollib.network.Session;
 import org.geysermc.mcprotocollib.network.event.session.PacketSendingEvent;
 import org.geysermc.mcprotocollib.network.event.session.SessionAdapter;
 import org.geysermc.mcprotocollib.protocol.packet.login.serverbound.ServerboundHelloPacket;
@@ -47,7 +44,6 @@ class FakePlayerImpl implements FakePlayer {
   @Named("config")
   private final RfpYamlDoc config;
   private final ReallyFakePlayers pl;
-  private final FakePlayerJoinListenerFactory joinListenerFactory;
   private final ComponentLogger logger;
 
   @Getter
@@ -64,18 +60,11 @@ class FakePlayerImpl implements FakePlayer {
   private Player player;
   @Getter
   private boolean removed;
-  @Getter
-  @Setter
-  private FakePlayerState state;
-
-  @Setter
-  private FakePlayerJoinListener joinListener;
 
   public void join() {
     if (removed) {
       return;
     }
-    state = FakePlayerState.RAW;
     // LoginListenerAsm.java takes part in applying this uuid further
     uuid = FakePlayerUuidUtil.createFakePlayerUuid(name);
     fakeLister.getRawFakePlayers().add(this);
@@ -102,8 +91,6 @@ class FakePlayerImpl implements FakePlayer {
       }
     });
     client.connect();
-    joinListener = joinListenerFactory.create(this);
-    joinListener.startListening();
     Bukkit.getScheduler().runTaskLater(pl, () -> {
       if (!removed && player == null) {
         logger.error("Fake player " + name
@@ -117,10 +104,6 @@ class FakePlayerImpl implements FakePlayer {
   public void remove() {
     if (removed) {
       return;
-    }
-    if (joinListener != null) {
-      joinListener.stopListening();
-      joinListener = null;
     }
     if (!Bukkit.getServer().isStopping()) {
       client.disconnect("Removed");
