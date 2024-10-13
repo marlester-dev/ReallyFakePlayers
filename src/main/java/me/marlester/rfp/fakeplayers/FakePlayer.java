@@ -18,7 +18,7 @@
 package me.marlester.rfp.fakeplayers;
 
 import java.util.UUID;
-import me.marlester.rfp.listener.fakeplayerjoinlistener.FakePlayerJoinListener;
+import me.marlester.rfp.listener.fakeplayerloginlisteners.FakePlayerJoinListener;
 import org.bukkit.entity.Player;
 import org.geysermc.mcprotocollib.network.Session;
 
