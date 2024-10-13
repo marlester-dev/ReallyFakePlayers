@@ -15,7 +15,7 @@
  * and limitations under the License.
  */
 
-package me.marlester.rfp.listener.fakeplayerloginlisteners;
+package me.marlester.rfp.listener.fakeplayerjoinlistener;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
