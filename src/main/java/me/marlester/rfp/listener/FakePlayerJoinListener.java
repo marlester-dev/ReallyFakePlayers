@@ -106,10 +106,6 @@ public class FakePlayerJoinListener implements Listener {
     if (config.getBoolean("no-gravity")) {
       player.setGravity(false);
     }
-    if (vaultIntegration.isActive()) {
-      vaultIntegration.giveGroup(player);
-      vaultIntegration.givePermissions(player);
-    }
     var consoleSender = Bukkit.getConsoleSender();
     config.getSerializedStringList("join-commands.as-console", player).forEach(c -> {
       Bukkit.dispatchCommand(consoleSender, c);
