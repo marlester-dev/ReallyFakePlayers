@@ -83,6 +83,15 @@ public class FakePlayerJoinListener implements Listener {
       }
     }
     onSpawn(player);
+    if (config.getBoolean("invulnerable")) {
+      player.setInvulnerable(true);
+    }
+    if (config.getBoolean("no-collision")) {
+      player.setCollidable(false);
+    }
+    if (config.getBoolean("no-gravity")) {
+      player.setGravity(false);
+    }
     var consoleSender = Bukkit.getConsoleSender();
     config.getSerializedStringList("join-commands.as-console", player).forEach(c -> {
       Bukkit.dispatchCommand(consoleSender, c);
@@ -106,21 +115,9 @@ public class FakePlayerJoinListener implements Listener {
 
   public void onSpawn(Player fakePlayer, boolean respawn) {
     if (config.getBoolean("invisibility-effect")) {
-      if (respawn) {
-        Bukkit.getScheduler().scheduleSyncDelayedTask(pl, () -> addInvis(fakePlayer), 1L);
-      } else {
-        addInvis(fakePlayer);
-      }
+      addInvis(fakePlayer);
     }
-    if (config.getBoolean("invulnerable")) {
-      fakePlayer.setInvulnerable(true);
-    }
-    if (config.getBoolean("no-collision")) {
-      fakePlayer.setCollidable(false);
-    }
-    if (config.getBoolean("no-gravity")) {
-      fakePlayer.setGravity(false);
-    }
+
     if (respawn) {
       var consoleSender = Bukkit.getConsoleSender();
       config.getSerializedStringList("respawn-commands.as-console", fakePlayer).forEach(c -> {

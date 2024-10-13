@@ -63,11 +63,10 @@ respawn-commands:
   # Commands that will be dispatched by the console
   # You are able to make this null to disable this
   as-console:
-    - "examplecommand"
+    - "effect give <internal_player_name> minecraft:strength 5000"
   # Commands that will be performed by the fake player
   # You are able to make this null to disable this
-  as-fake-player:
-    - "examplecommand"
+  as-fake-player: null
 # Commands executed when a fake player quits
 quit-commands:
   # Commands that will be dispatched by the console
