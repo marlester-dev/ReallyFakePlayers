@@ -81,15 +81,7 @@ class FakePlayerImpl implements FakePlayer {
     client = new BotSession(name, host, port, BotSettings.builder()
         .renderDistance(config.getInt("render-distance"))
         .build());
-    client.addListener(new SessionAdapter() {
-      @Override
-      public void packetSending(PacketSendingEvent event) {
-        var packet = event.getPacket();
-        if (packet instanceof ServerboundHelloPacket helloPacket) {
-          event.setPacket(helloPacket.withProfileId(key));
-        }
-      }
-    });
+    client.addListener(new FakePlayerSessionAdapter(this, key));
     client.connect();
     Bukkit.getScheduler().runTaskLater(pl, () -> {
       if (!removed && player == null) {
