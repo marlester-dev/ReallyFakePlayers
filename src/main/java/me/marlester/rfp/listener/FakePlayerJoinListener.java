@@ -85,26 +85,7 @@ public class FakePlayerJoinListener implements Listener {
         onlinePlayer.hidePlayer(pl, player);
       }
     }
-    if (config.getBoolean("invisibility-effect")) {
-      player.addPotionEffect(
-          new PotionEffect(
-              PotionEffectType.INVISIBILITY,
-              PotionEffect.INFINITE_DURATION,
-              1,
-              false,
-              false
-          )
-      );
-    }
-    if (config.getBoolean("invulnerable")) {
-      player.setInvulnerable(true);
-    }
-    if (config.getBoolean("no-collision")) {
-      player.setCollidable(false);
-    }
-    if (config.getBoolean("no-gravity")) {
-      player.setGravity(false);
-    }
+    onSpawn(player);
     var consoleSender = Bukkit.getConsoleSender();
     config.getSerializedStringList("join-commands.as-console", player).forEach(c -> {
       Bukkit.dispatchCommand(consoleSender, c);
@@ -119,6 +100,29 @@ public class FakePlayerJoinListener implements Listener {
           config.getInt("auto-quit.delay.max") + 1
       );
       Bukkit.getScheduler().runTaskLater(pl, fakePlayer::remove, delay);
+    }
+  }
+
+  public void onSpawn(Player fakePlayer) {
+    if (config.getBoolean("invisibility-effect")) {
+      fakePlayer.addPotionEffect(
+          new PotionEffect(
+              PotionEffectType.INVISIBILITY,
+              PotionEffect.INFINITE_DURATION,
+              1,
+              false,
+              false
+          )
+      );
+    }
+    if (config.getBoolean("invulnerable")) {
+      fakePlayer.setInvulnerable(true);
+    }
+    if (config.getBoolean("no-collision")) {
+      fakePlayer.setCollidable(false);
+    }
+    if (config.getBoolean("no-gravity")) {
+      fakePlayer.setGravity(false);
     }
   }
 }
