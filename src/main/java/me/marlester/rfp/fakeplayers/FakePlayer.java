@@ -97,4 +97,10 @@ public interface FakePlayer {
    * player lists, etc. Will not try to remove if already removed.
    */
   void remove();
+
+  /**
+   * @return state of the fake player. RAW means not connected, PRELOGIN means in prelogin event.
+   */
+  FakePlayerState getState();
+  void setState(FakePlayerState value);
 }

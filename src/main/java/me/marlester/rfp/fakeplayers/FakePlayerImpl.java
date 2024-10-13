@@ -64,6 +64,9 @@ class FakePlayerImpl implements FakePlayer {
   private Player player;
   @Getter
   private boolean removed;
+  @Getter
+  @Setter
+  private FakePlayerState state;
 
   @Setter
   private FakePlayerJoinListener joinListener;
@@ -72,6 +75,7 @@ class FakePlayerImpl implements FakePlayer {
     if (removed) {
       return;
     }
+    state = FakePlayerState.RAW;
     // LoginListenerAsm.java takes part in applying this uuid further
     uuid = FakePlayerUuidUtil.createFakePlayerUuid(name);
     fakeLister.getRawFakePlayers().add(this);
