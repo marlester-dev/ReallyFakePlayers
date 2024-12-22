@@ -4,7 +4,7 @@ plugins {
     id 'net.minecrell.plugin-yml.paper' version '0.6.0'
 }
 
-version = '4.0.5'
+version = '4.1.0'
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(21))
@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    paperweightDevelopmentBundle('io.papermc.paper:dev-bundle:1.21-R0.1-SNAPSHOT')
+    paperweightDevelopmentBundle('io.papermc.paper:dev-bundle:1.21.4-R0.1-SNAPSHOT')
 
     /* Compile time libs */
     compileOnly 'org.jetbrains:annotations:24.1.0'
@@ -38,9 +38,9 @@ dependencies {
     }
 
     /* Paper libs */
-    paperLibrary 'com.github.marlester-dev:MCBotLib:1.1.0'
-    paperLibrary 'com.github.Revxrsal.Lamp:common:3.2.1'
-    paperLibrary 'com.github.Revxrsal.Lamp:bukkit:3.2.1'
+    paperLibrary 'com.github.marlester-dev:MCBotLib:1.2.0'
+    paperLibrary 'com.github.Revxrsal.Lamp:common:3.3.3'
+    paperLibrary 'com.github.Revxrsal.Lamp:bukkit:3.3.3'
     paperLibrary 'dev.dejvokep:boosted-yaml:1.3.7'
     paperLibrary 'dev.dejvokep:boosted-yaml-spigot:1.5'
     paperLibrary 'com.google.inject:guice:7.0.0'
