@@ -5,8 +5,6 @@
 # A-Z (upper and lower case)
 # -9
 # The only special character accepted is _ (underscore)
-# A lot of names were initially taken from here:
-# https://github.com/freethemice/ReallyFakePlayers/blob/main/NameList.yml
 names:
   - GIUda99
   - a5eaga
