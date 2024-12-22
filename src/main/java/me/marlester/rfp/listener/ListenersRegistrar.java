@@ -37,6 +37,7 @@ public class ListenersRegistrar {
   private final ReallyFakePlayers pl;
 
   private final FakePlayerJoinListener fakePlayerJoinListener;
+  private final FakePlayerLoginListener fakePlayerLoginListener;
   private final FakePlayerRespawnListener fakePlayerRespawnListener;
   private final FakePlayerGuardingListener fakePlayerGuardingListener;
   private final CommandBlockerListener commandBlockerListener;
@@ -59,6 +60,7 @@ public class ListenersRegistrar {
     pluginManager.registerEvents(spawnLocationListener, pl);
     pluginManager.registerEvents(fakePlayerQuitListener, pl);
     pluginManager.registerEvents(fakePlayerHideListener, pl);
+    pluginManager.registerEvents(fakePlayerLoginListener, pl);
     pluginManager.registerEvents(welcomeListener, pl);
     pluginManager.registerEvents(updateCheckListener, pl);
   }
