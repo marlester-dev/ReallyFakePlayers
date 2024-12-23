@@ -3,6 +3,7 @@ package me.marlester.rfp.fakeplayers;
 import static org.geysermc.mcprotocollib.protocol.data.game.ClientCommand.RESPAWN;
 
 import java.util.UUID;
+import lombok.Getter;
 import org.geysermc.mcprotocollib.network.Session;
 import org.geysermc.mcprotocollib.network.event.session.PacketSendingEvent;
 import org.geysermc.mcprotocollib.network.event.session.SessionAdapter;
@@ -13,7 +14,9 @@ import org.geysermc.mcprotocollib.protocol.packet.login.serverbound.ServerboundH
 
 public class FakePlayerSessionAdapter extends SessionAdapter {
 
+  @Getter
   private final FakePlayer fakePlayer;
+  @Getter
   private final UUID key;
 
   FakePlayerSessionAdapter(FakePlayer fakePlayer, UUID key) {
