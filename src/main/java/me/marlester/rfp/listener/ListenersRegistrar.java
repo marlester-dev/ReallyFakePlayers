@@ -46,6 +46,7 @@ public class ListenersRegistrar {
   private final SpawnLocationListener spawnLocationListener;
   private final FakePlayerHideListener fakePlayerHideListener;
   private final UpdateCheckListener updateCheckListener;
+  private final PlayerKickListener playerKickListener;
 
   /**
    * Registers all listeners with the Bukkit plugin manager. This method ensures that each listener
@@ -63,5 +64,6 @@ public class ListenersRegistrar {
     pluginManager.registerEvents(fakePlayerLoginListener, pl);
     pluginManager.registerEvents(welcomeListener, pl);
     pluginManager.registerEvents(updateCheckListener, pl);
+    pluginManager.registerEvents(playerKickListener, pl);
   }
 }
