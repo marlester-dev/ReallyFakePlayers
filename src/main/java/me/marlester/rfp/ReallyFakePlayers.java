@@ -22,6 +22,8 @@ import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
 import io.github.miniplaceholders.api.Expansion;
+import io.papermc.paper.configuration.GlobalConfiguration;
+import java.util.logging.Level;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import me.marlester.rfp.autojoin.AutoJoin;
@@ -54,6 +56,13 @@ public class ReallyFakePlayers extends JavaPlugin {
   @SneakyThrows
   @Override
   public void onEnable() {
+    if (GlobalConfiguration.get().proxies.velocity.enabled) {
+      getComponentLogger().error("Velocity is not supported! Please disable velocity" +
+          " in your paper config.", new UnsupportedOperationException());
+      Bukkit.getPluginManager().disablePlugin(this);
+      return;
+    }
+
     injector = Guice.createInjector(
         new MainModule(this),
         new ConfigModule(),
