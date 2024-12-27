@@ -40,6 +40,7 @@ import me.marlester.rfp.update.UpdateChecker;
 import me.marlester.rfp.vault.VaultIntegration;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.spigotmc.SpigotConfig;
 
 /**
  * The main class of this plugin. It creates the injector, loads up all the needed processes and
@@ -56,9 +57,9 @@ public class ReallyFakePlayers extends JavaPlugin {
   @SneakyThrows
   @Override
   public void onEnable() {
-    if (GlobalConfiguration.get().proxies.velocity.enabled) {
-      getComponentLogger().error("Velocity is not supported! Please disable velocity" +
-          " in your paper config.", new UnsupportedOperationException());
+    if (GlobalConfiguration.get().proxies.velocity.enabled || SpigotConfig.bungee) {
+      getComponentLogger().error("Velocity/Bungeecord is not supported! Please disable velocity" +
+          "/bungeecord in your paper config.", new UnsupportedOperationException());
       Bukkit.getPluginManager().disablePlugin(this);
       return;
     }
