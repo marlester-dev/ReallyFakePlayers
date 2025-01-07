@@ -89,9 +89,4 @@ public interface FakePlayer {
    * player lists, etc. Will not try to remove if already removed.
    */
   void remove();
-
-  /**
-   * Sends a message in chat through fake player
-   */
-  void chat(String message);
 }

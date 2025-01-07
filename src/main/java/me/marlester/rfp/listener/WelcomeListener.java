@@ -111,12 +111,13 @@ public class WelcomeListener implements Listener {
       }
       var fakePlayer = upForGrabsFakePlayers.get(ThreadLocalRandom.current()
           .nextInt(upForGrabsFakePlayers.size()));
+      var fakePlayerBukkit = fakePlayer.getPlayer();
       var messages = player.hasPlayedBefore()
           ? config.getStringList("welcome.rejoin-messages")
           : config.getStringList("welcome.first-join-messages");
-      var message = miniMsgAsst.serializeStringListRandomAsPlainText(messages,
-          fakePlayer.getPlayer(), player);
-      fakePlayer.chat(message);
+      var message = miniMsgAsst.serializeStringListRandomAsPlainText(messages, fakePlayerBukkit,
+          player);
+      fakePlayerBukkit.chat(message);
       welcomers.add(fakePlayer);
       scheduler.runTaskLater(pl, () -> {
         welcomers.remove(fakePlayer);

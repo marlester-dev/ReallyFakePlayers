@@ -23,6 +23,7 @@ import com.google.inject.Key;
 import com.google.inject.name.Names;
 import io.github.miniplaceholders.api.Expansion;
 import io.papermc.paper.configuration.GlobalConfiguration;
+import java.util.logging.Level;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import me.marlester.rfp.autojoin.AutoJoin;

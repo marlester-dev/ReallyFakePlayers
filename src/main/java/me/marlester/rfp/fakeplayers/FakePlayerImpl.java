@@ -20,8 +20,6 @@ package me.marlester.rfp.fakeplayers;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 import com.google.inject.name.Named;
-import java.time.Instant;
-import java.util.BitSet;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -35,7 +33,9 @@ import me.marlester.rfp.faketools.FakeLister;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.geysermc.mcprotocollib.protocol.packet.ingame.serverbound.ServerboundChatPacket;
+import org.geysermc.mcprotocollib.network.event.session.PacketSendingEvent;
+import org.geysermc.mcprotocollib.network.event.session.SessionAdapter;
+import org.geysermc.mcprotocollib.protocol.packet.login.serverbound.ServerboundHelloPacket;
 
 @RequiredArgsConstructor(onConstructor_ = {@AssistedInject}, access = AccessLevel.PACKAGE)
 class FakePlayerImpl implements FakePlayer {
@@ -102,9 +102,5 @@ class FakePlayerImpl implements FakePlayer {
     }
     fakeLister.removeFakePlayerFromAllMaps(this);
     removed = true;
-  }
-
-  public void chat(String message) {
-    client.send(new ServerboundChatPacket(message, Instant.now().toEpochMilli(), 0L, null, 0, new BitSet()));
   }
 }
