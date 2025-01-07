@@ -97,8 +97,8 @@ public class Chatting {
       messages = config.getStringList("chatting.messages");
     }
 
-    String message = miniMsgAsst.serializeStringListRandomAsPlainText(messages,
-        fakePlayer.getPlayer());
-    fakePlayer.chat(message);
+    var player = fakePlayer.getPlayer();
+    String message = miniMsgAsst.serializeStringListRandomAsPlainText(messages, player);
+    player.chat(message);
   }
 }
